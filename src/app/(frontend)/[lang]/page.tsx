@@ -1,15 +1,14 @@
 import type { Metadata } from 'next'
 
-import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { TypedLocale } from 'payload'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 export async function generateStaticParams() {
-  return [{ lang: 'en' }, { lang: 'tr' }, { lang: 'sr' }]
+  return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
 }
 
 type Args = {
@@ -22,7 +21,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { lang } = await paramsPromise
 
   if (!lang) {
-    return <PayloadRedirects url={'/en'} />
+    return redirect('/de')
   }
 
   const page = await queryStartPageByLang({
@@ -32,7 +31,6 @@ export default async function Page({ params: paramsPromise }: Args) {
   if (!page) {
     return notFound()
   }
-  console.log('page', page)
 
   const { title, description } = page
 
@@ -60,14 +58,12 @@ const queryStartPageByLang = cache(async ({ lang }: { lang: TypedLocale }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayloadHMR({ config: configPromise })
-  console.log('lang', lang, draft)
 
   const result = await payload.findGlobal({
     slug: 'start-page',
     overrideAccess: draft,
     locale: lang,
   })
-  console.log('result', result)
 
   return result || null
 })

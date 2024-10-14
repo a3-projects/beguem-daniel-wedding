@@ -13,7 +13,7 @@ import { post3 } from './post-3'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const collections: CollectionSlug[] = ['categories', 'media', 'posts', 'search']
+const collections: CollectionSlug[] = ['categories', 'media', 'posts']
 const globals: GlobalSlug[] = ['start-page']
 
 // Next.js revalidation errors are normal when seeding the database without a server running
