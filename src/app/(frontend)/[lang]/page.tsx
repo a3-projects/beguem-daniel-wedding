@@ -36,7 +36,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   return (
     <article className="pt-16 pb-24 ">
-      <h1>{title}</h1>
+      <h1 className="font-serif ~text-4xl/2xl">{title} &</h1>
       <p>{description}</p>
     </article>
   )

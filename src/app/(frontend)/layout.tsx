@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 import { cn } from 'src/utilities/cn'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
+import { Playfair_Display, Poppins } from 'next/font/google'
+
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -13,11 +13,18 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 
+const sansFont = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '700'],
+  variable: '--font-sans',
+})
+const serifFont = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' })
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html className={cn(sansFont.variable, serifFont.variable)} lang="de" suppressHydrationWarning>
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
