@@ -2,15 +2,11 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
 import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
-import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { searchPlugin } from '@payloadcms/plugin-search'
 import {
   BoldFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
   ItalicFeature,
   LinkFeature,
   lexicalEditor,
@@ -23,33 +19,34 @@ import { fileURLToPath } from 'url'
 
 import Categories from './collections/Categories'
 import { Media } from './collections/Media'
-import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import Users from './collections/Users'
 import { seedHandler } from './endpoints/seedHandler'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
+import { StartPage } from './StartPage/config'
+
 import { revalidateRedirects } from './hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import { Page, Post } from 'src/payload-types'
-
-import { searchFields } from '@/search/fieldOverrides'
-import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { Post } from 'src/payload-types'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
+const generateTitle: GenerateTitle<Post> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
 }
 
-const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
+const generateURL: GenerateURL<Post> = ({ doc }) => {
   return doc?.slug
     ? `${process.env.NEXT_PUBLIC_SERVER_URL!}/${doc.slug}`
     : process.env.NEXT_PUBLIC_SERVER_URL!
 }
 
 export default buildConfig({
+  localization: {
+    locales: ['de', 'tr', 'sr'], // required
+    defaultLocale: 'de', // required
+    fallback: true,
+  },
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -94,7 +91,7 @@ export default buildConfig({
         BoldFeature(),
         ItalicFeature(),
         LinkFeature({
-          enabledCollections: ['pages', 'posts'],
+          enabledCollections: ['posts'],
           fields: ({ defaultFields }) => {
             const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
               if ('name' in field && field.name === 'url') return false
@@ -121,7 +118,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Posts, Media, Categories, Users],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
@@ -133,10 +130,10 @@ export default buildConfig({
       path: '/seed',
     },
   ],
-  globals: [Header, Footer],
+  globals: [StartPage],
   plugins: [
     redirectsPlugin({
-      collections: ['pages', 'posts'],
+      collections: ['posts'],
       overrides: {
         // @ts-expect-error
         fields: ({ defaultFields }) => {
@@ -164,41 +161,7 @@ export default buildConfig({
       generateTitle,
       generateURL,
     }),
-    formBuilderPlugin({
-      fields: {
-        payment: false,
-      },
-      formOverrides: {
-        fields: ({ defaultFields }) => {
-          return defaultFields.map((field) => {
-            if ('name' in field && field.name === 'confirmationMessage') {
-              return {
-                ...field,
-                editor: lexicalEditor({
-                  features: ({ rootFeatures }) => {
-                    return [
-                      ...rootFeatures,
-                      FixedToolbarFeature(),
-                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    ]
-                  },
-                }),
-              }
-            }
-            return field
-          })
-        },
-      },
-    }),
-    searchPlugin({
-      collections: ['posts'],
-      beforeSync: beforeSyncWithSearch,
-      searchOverrides: {
-        fields: ({ defaultFields }) => {
-          return [...defaultFields, ...searchFields]
-        },
-      },
-    }),
+
     payloadCloudPlugin(), // storage-adapter-placeholder
   ],
   secret: process.env.PAYLOAD_SECRET!,

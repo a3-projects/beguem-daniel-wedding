@@ -4,9 +4,6 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { contactForm as contactFormData } from './contact-form'
-import { contact as contactPageData } from './contact-page'
-import { home } from './home'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
 import { post1 } from './post-1'
@@ -16,16 +13,8 @@ import { post3 } from './post-3'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const collections: CollectionSlug[] = [
-  'categories',
-  'media',
-  'pages',
-  'posts',
-  'forms',
-  'form-submissions',
-  'search',
-]
-const globals: GlobalSlug[] = ['header', 'footer']
+const collections: CollectionSlug[] = ['categories', 'media', 'posts', 'search']
+const globals: GlobalSlug[] = ['start-page']
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -58,9 +47,7 @@ export const seed = async ({
   for (const global of globals) {
     await payload.updateGlobal({
       slug: global,
-      data: {
-        navItems: [],
-      },
+      data: {},
       req,
     })
   }
@@ -76,14 +63,6 @@ export const seed = async ({
       req,
     })
   }
-
-  const pages = await payload.delete({
-    collection: 'pages',
-    where: {},
-    req,
-  })
-
-  console.log({ pages })
 
   payload.logger.info(`— Seeding demo author and user...`)
 
@@ -256,104 +235,6 @@ export const seed = async ({
     collection: 'posts',
     data: {
       relatedPosts: [post1Doc.id, post2Doc.id],
-    },
-    req,
-  })
-
-  payload.logger.info(`— Seeding home page...`)
-
-  await payload.create({
-    collection: 'pages',
-    data: JSON.parse(
-      JSON.stringify(home)
-        .replace(/"\{\{IMAGE_1\}\}"/g, String(imageHomeID))
-        .replace(/"\{\{IMAGE_2\}\}"/g, String(image2ID)),
-    ),
-    req,
-  })
-
-  payload.logger.info(`— Seeding contact form...`)
-
-  const contactForm = await payload.create({
-    collection: 'forms',
-    data: JSON.parse(JSON.stringify(contactFormData)),
-    req,
-  })
-
-  let contactFormID: number | string = contactForm.id
-
-  if (payload.db.defaultIDType === 'text') {
-    contactFormID = `"${contactFormID}"`
-  }
-
-  payload.logger.info(`— Seeding contact page...`)
-
-  const contactPage = await payload.create({
-    collection: 'pages',
-    data: JSON.parse(
-      JSON.stringify(contactPageData).replace(/"\{\{CONTACT_FORM_ID\}\}"/g, String(contactFormID)),
-    ),
-    req,
-  })
-
-  payload.logger.info(`— Seeding header...`)
-
-  await payload.updateGlobal({
-    slug: 'header',
-    data: {
-      navItems: [
-        {
-          link: {
-            type: 'custom',
-            label: 'Posts',
-            url: '/posts',
-          },
-        },
-        {
-          link: {
-            type: 'reference',
-            label: 'Contact',
-            reference: {
-              relationTo: 'pages',
-              value: contactPage.id,
-            },
-          },
-        },
-      ],
-    },
-    req,
-  })
-
-  payload.logger.info(`— Seeding footer...`)
-
-  await payload.updateGlobal({
-    slug: 'footer',
-    data: {
-      navItems: [
-        {
-          link: {
-            type: 'custom',
-            label: 'Admin',
-            url: '/admin',
-          },
-        },
-        {
-          link: {
-            type: 'custom',
-            label: 'Source Code',
-            newTab: true,
-            url: 'https://github.com/payloadcms/payload/tree/beta/templates/website',
-          },
-        },
-        {
-          link: {
-            type: 'custom',
-            label: 'Payload',
-            newTab: true,
-            url: 'https://payloadcms.com/',
-          },
-        },
-      ],
     },
     req,
   })
