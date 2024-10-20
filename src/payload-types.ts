@@ -11,11 +11,9 @@ export interface Config {
     users: UserAuthOperations;
   };
   collections: {
-    posts: Post;
     media: Media;
-    categories: Category;
+    participation: Participation;
     users: User;
-    redirects: Redirect;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -51,88 +49,11 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: string;
-  title: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  relatedPosts?: (string | Post)[] | null;
-  categories?: (string | Category)[] | null;
-  meta?: {
-    title?: string | null;
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  publishedAt?: string | null;
-  authors?: (string | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  title: string;
-  parent?: (string | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (string | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: string;
-  alt: string;
-  caption?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  alt?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -144,6 +65,27 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "participation".
+ */
+export interface Participation {
+  id: string;
+  participants?:
+    | {
+        name?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  participantsMakeupHair?:
+    | {
+        name?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -165,48 +107,22 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "redirects".
- */
-export interface Redirect {
-  id: string;
-  from: string;
-  to?: {
-    type?: ('reference' | 'custom') | null;
-    reference?: {
-      relationTo: 'posts';
-      value: string | Post;
-    } | null;
-    url?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'posts';
-        value: string | Post;
-      } | null)
-    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: string | Category;
+        relationTo: 'participation';
+        value: string | Participation;
       } | null)
     | ({
         relationTo: 'users';
         value: string | User;
-      } | null)
-    | ({
-        relationTo: 'redirects';
-        value: string | Redirect;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -256,8 +172,77 @@ export interface PayloadMigration {
  */
 export interface StartPage {
   id: string;
-  title?: string | null;
-  description?: string | null;
+  general: {
+    weddingDate: string;
+    participationDeadline: string;
+    phoneNumber: string;
+  };
+  start: {
+    backgroundImage: string | Media;
+    title: string;
+    description: string;
+    buttonText: string;
+  };
+  information: {
+    title: string;
+    subtitle: string;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+  };
+  pariticipation: {
+    title: string;
+    subtitle: string;
+    form: {
+      participants: string;
+      paricipantPlaceholder: string;
+      addParticipant: string;
+      participantsMakeupHair: string;
+      addParticipantsMakupHair: string;
+      makeupHairInfo: string;
+      buttonText: string;
+      nameMissing: string;
+    };
+    formSuccess: {
+      title: string;
+      subtitle: string;
+      backToStartPage: string;
+    };
+  };
+  countdown: {
+    title: string;
+    days: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
+  };
+  location: {
+    image1: string | Media;
+    image2: string | Media;
+    image3: string | Media;
+    title: string;
+    name: string;
+    address: string;
+    time: string;
+    mapsLink: string;
+    buttonText: string;
+  };
+  footer: {
+    title: string;
+    subtitle: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }

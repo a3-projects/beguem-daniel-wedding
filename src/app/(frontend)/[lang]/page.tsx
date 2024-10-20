@@ -6,7 +6,18 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { TypedLocale } from 'payload'
 import { notFound, redirect } from 'next/navigation'
-
+import { Button } from '@/ui/components/Button'
+import { Main } from '@/ui/components/Main'
+import { HeroBottomBow } from '@/app/(frontend)/[lang]/_components/HeroBottomBow'
+import { SectionCountdown } from '@/app/(frontend)/[lang]/_components/countdown/SectionCountdown'
+import { Countdown } from '@/app/(frontend)/[lang]/_components/countdown/Countdown'
+import { SectionParticipation } from '@/app/(frontend)/[lang]/_components/participation/SectionParticipation'
+import { Footer } from '@/app/(frontend)/[lang]/_components/Footer'
+import { SectionLocation } from '@/app/(frontend)/[lang]/_components/SectionLocation'
+import { SectionInformation } from '@/app/(frontend)/[lang]/_components/SectionInformation'
+import { LanguageSelect } from '@/app/(frontend)/[lang]/_components/LanguageSelect'
+import { ButtonLink } from '@/ui/components/ButtonLink'
+import { text } from '@/ui/components/Text'
 export async function generateStaticParams() {
   return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
 }
@@ -32,13 +43,48 @@ export default async function Page({ params: paramsPromise }: Args) {
     return notFound()
   }
 
-  const { title, description } = page
-
+  const startPage = page
+  const { countdown, footer, general, start, pariticipation, information, location } = startPage
+  const weddingDate = new Date(general.weddingDate)
+  const weddingDateFormatted = new Date(weddingDate).toLocaleDateString('de-DE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
   return (
-    <article className="pt-16 pb-24 ">
-      <h1 className="font-serif ~text-4xl/2xl">{title} &</h1>
-      <p>{description}</p>
-    </article>
+    <>
+      <div>
+        <LanguageSelect lang={lang} />
+        {start && (
+          <HeroBottomBow
+            subtitle={weddingDateFormatted}
+            buttonLink={'#teilnahme-bestaetigen'}
+            {...start}
+          />
+        )}
+        {countdown && (
+          <SectionCountdown translations={countdown}>
+            <Countdown endTime={general.weddingDate} translations={countdown} />
+          </SectionCountdown>
+        )}
+        <div className="mx-auto flex items-center justify-center">
+          <ButtonLink
+            className={text({ ty: 'subtitle', className: 'align-self-center justify-self-center' })}
+            href={'#teilnahme-bestaetigen'}
+            color="primary"
+            size="lg"
+          >
+            {start.buttonText}
+          </ButtonLink>
+        </div>
+
+        {location && <SectionLocation translations={location} />}
+
+        {information && <SectionInformation translations={information} />}
+        {pariticipation && <SectionParticipation translations={pariticipation} />}
+        {footer && <Footer translations={footer} phoneNumber={general.phoneNumber} />}
+      </div>
+    </>
   )
 }
 
@@ -49,12 +95,12 @@ export async function generateMetadata({ params: paramsPromise }): Promise<Metad
   })
 
   return {
-    title: page.title,
-    description: page.description,
+    title: page.start?.title,
+    description: page.general?.weddingDate,
   }
 }
 
-const queryStartPageByLang = cache(async ({ lang }: { lang: TypedLocale }) => {
+export const queryStartPageByLang = cache(async ({ lang }: { lang: TypedLocale }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayloadHMR({ config: configPromise })

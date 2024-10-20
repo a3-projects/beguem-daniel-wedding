@@ -12,17 +12,6 @@ import './index.scss'
 
 const baseClass = 'admin-bar'
 
-const collectionLabels = {
-  posts: {
-    plural: 'Posts',
-    singular: 'Post',
-  },
-  projects: {
-    plural: 'Projects',
-    singular: 'Project',
-  },
-}
-
 const Title: React.FC = () => <span>Dashboard</span>
 
 export const AdminBar: React.FC<{
@@ -31,7 +20,6 @@ export const AdminBar: React.FC<{
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
-  const collection = collectionLabels?.[segments?.[1]] ? segments?.[1] : 'posts'
   const router = useRouter()
 
   const onAuthChange = React.useCallback((user) => {
@@ -55,11 +43,6 @@ export const AdminBar: React.FC<{
             user: 'text-white',
           }}
           cmsURL={process.env.NEXT_PUBLIC_SERVER_URL}
-          collection={collection}
-          collectionLabels={{
-            plural: collectionLabels[collection]?.plural || 'Pages',
-            singular: collectionLabels[collection]?.singular || 'Page',
-          }}
           logo={<Title />}
           onAuthChange={onAuthChange}
           onPreviewExit={() => {

@@ -22,6 +22,7 @@ const serifFont = Playfair_Display({ subsets: ['latin'], variable: '--font-serif
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const currentTime = new Date().toLocaleString()
 
   return (
     <html className={cn(sansFont.variable, serifFont.variable)} lang="de" suppressHydrationWarning>
@@ -31,15 +32,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
-          <AdminBar
+          {/* <AdminBar
             adminBarProps={{
               preview: isEnabled,
             }}
           />
-          <LivePreviewListener />
+          <LivePreviewListener /> */}
 
           {children}
         </Providers>
+        <div
+          className="fixed bottom-0 bg-white size-2 right-0 p-[1px] border text-[10px]"
+          title={currentTime}
+        ></div>
       </body>
     </html>
   )

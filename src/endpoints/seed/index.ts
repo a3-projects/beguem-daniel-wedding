@@ -4,16 +4,10 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { image1 } from './image-1'
-import { image2 } from './image-2'
-import { post1 } from './post-1'
-import { post2 } from './post-2'
-import { post3 } from './post-3'
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const collections: CollectionSlug[] = ['categories', 'media', 'posts']
+const collections: CollectionSlug[] = ['media']
 const globals: GlobalSlug[] = ['start-page']
 
 // Next.js revalidation errors are normal when seeding the database without a server running
@@ -41,16 +35,7 @@ export const seed = async ({
     fs.rmdirSync(mediaDir, { recursive: true })
   }
 
-  payload.logger.info(`— Clearing collections and globals...`)
-
-  // clear the database
-  for (const global of globals) {
-    await payload.updateGlobal({
-      slug: global,
-      data: {},
-      req,
-    })
-  }
+  payload.logger.info(`— Clearing collections...`)
 
   for (const collection of collections) {
     await payload.delete({
@@ -89,152 +74,343 @@ export const seed = async ({
   let demoAuthorID: number | string = demoAuthor.id
 
   payload.logger.info(`— Seeding media...`)
-  const image1Doc = await payload.create({
+
+  const heroCouple = await payload.create({
     collection: 'media',
-    data: image1,
-    filePath: path.resolve(dirname, 'image-post1.webp'),
+    data: {},
+    filePath: path.resolve(dirname, 'hero-couple.jpg'),
     req,
   })
-  const image2Doc = await payload.create({
+
+  const locationImage1 = await payload.create({
     collection: 'media',
-    data: image2,
-    filePath: path.resolve(dirname, 'image-post2.webp'),
+    data: {},
+    filePath: path.resolve(dirname, 'gardos-tower.webp'),
     req,
   })
-  const image3Doc = await payload.create({
+
+  const locationImage2 = await payload.create({
     collection: 'media',
-    data: image2,
-    filePath: path.resolve(dirname, 'image-post3.webp'),
+    data: {},
+    filePath: path.resolve(dirname, 'gardos-tower-outside.jpg'),
     req,
   })
-  const imageHomeDoc = await payload.create({
+
+  const locationImage3 = await payload.create({
     collection: 'media',
-    data: image2,
-    filePath: path.resolve(dirname, 'image-hero1.webp'),
+    data: {},
+    filePath: path.resolve(dirname, 'gardos-tower-outside-2.jpg'),
     req,
   })
 
-  payload.logger.info(`— Seeding categories...`)
-  const technologyCategory = await payload.create({
-    collection: 'categories',
+  // let image1ID: number | string = image1Doc.id
+  // let image2ID: number | string = image2Doc.id
+  // let image3ID: number | string = image3Doc.id
+  // let imageHomeID: number | string = imageHomeDoc.id
+
+  // if (payload.db.defaultIDType === 'text') {
+  //   image1ID = `"${image1Doc.id}"`
+  //   image2ID = `"${image2Doc.id}"`
+  //   image3ID = `"${image3Doc.id}"`
+  //   imageHomeID = `"${imageHomeDoc.id}"`
+  //   demoAuthorID = `"${demoAuthorID}"`
+  // }
+
+  // Seed the start-page global for each language locale
+  payload.logger.info(`— Seeding start-page for de...`)
+  await payload.updateGlobal({
+    slug: 'start-page',
+    locale: 'de',
+    publishSpecificLocale: 'de',
     data: {
-      title: 'Technology',
+      general: {
+        weddingDate: '2025-06-14',
+        participationDeadline: '2025-01-31',
+        phoneNumber: '+49 4954 3450492',
+      },
+      start: {
+        backgroundImage: heroCouple.id,
+        title: 'Begüm & Daniel',
+        description: 'Wir freuen uns darauf, unseren besonderen Tag mit euch zu teilen!',
+        buttonText: 'Teilnahme bestätigen',
+      },
+      information: {
+        title: 'Information',
+        subtitle:
+          'Hier teilen wir euch allgemeine Informationen mit. Schaut am besten ab und zu mal hier rein.',
+        description: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    detail: 0,
+                    format: 0,
+                    mode: 'normal',
+                    style: '',
+                    text: 'Beispiel ',
+                    version: 1,
+                  },
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                textFormat: 0,
+                version: 1,
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        },
+      },
+      pariticipation: {
+        title: 'Wir freuen uns auf Euch!',
+        subtitle:
+          'Bitte gib hier kurz an, wer an der Feier teilnimmt und wer zum Friseur/Makeup mitkommen möchte.',
+        form: {
+          participants: 'Teilnehmer',
+          addParticipant: 'Teilnehmer hinzufügen',
+          paricipantPlaceholder: 'Name des Teilnehmers',
+          participantsMakeupHair: 'Teilnehmer Makeup / Friseur',
+          addParticipantsMakupHair: 'Makeup / Friseur Teilnehmer Hinzufügen',
+          makeupHairInfo: "60€ pro Person. Samstag früh geht's los.",
+          buttonText: 'Teilnahme bestätigen',
+          nameMissing: 'Bitte gib einen Namen ein.',
+        },
+        formSuccess: {
+          backToStartPage: 'Zurück zur Startseite',
+          title: 'Teilnahme bestätigt',
+          subtitle:
+            'Wir freuen uns auf dich! Falls sich etwas an deiner Teilnahme ändert, gib uns einfach Bescheid.',
+        },
+      },
+      countdown: {
+        title: 'Bald ist es soweit!',
+        days: 'Tage',
+        hours: 'Stunden',
+        minutes: 'Minuten',
+        seconds: 'Sekunden',
+      },
+      location: {
+        image1: locationImage1.id,
+        image2: locationImage2.id,
+        image3: locationImage3.id,
+        title: 'Location',
+        name: 'Gardos Turm',
+        address: 'Grobljanska BB, Belgrad 11080, Serbien',
+        buttonText: 'Google Maps',
+        time: '18:00 - 21:00',
+        mapsLink:
+          'https://www.google.com/maps/place/Restaurant+Gardos/@44.848237,20.4044287,16z/data=!3m1!4b1!4m6!3m5!1s0x475a65a0fd0e7c1d:0xba29e72b79de3ac!8m2!3d44.8482371!4d20.409305!16s%2Fg%2F11c5zxfc_d?entry=ttu&g_ep=EgoyMDI0MTAxNi4wIKXMDSoASAFQAw%3D%3D',
+      },
+      footer: {
+        title: 'Noch fragen?',
+        subtitle: 'Ruft uns an oder schreibt uns einfach auf WhatsApp!',
+      },
     },
     req,
   })
 
-  const newsCategory = await payload.create({
-    collection: 'categories',
+  payload.logger.info(`— Seeding start-page for tr...`)
+  await payload.updateGlobal({
+    slug: 'start-page',
+    locale: 'tr',
+    publishSpecificLocale: 'tr',
+
     data: {
-      title: 'News',
+      general: {
+        weddingDate: '2025-06-14',
+        participationDeadline: '2025-01-31',
+        phoneNumber: '+49 4954 3450492',
+      },
+      start: {
+        backgroundImage: heroCouple.id,
+        title: 'Begüm & Daniel',
+        description: 'Bizim özel günümüzü sizinle paylaşmaya çalışıyoruz!',
+        buttonText: 'Katılımı onayla',
+      },
+      information: {
+        title: 'Bilgi',
+        subtitle: 'Burada size genel bilgiler paylaşacağız. Arada bir bakın.',
+        description: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    detail: 0,
+                    format: 0,
+                    mode: 'normal',
+                    style: '',
+                    text: 'Örnek ',
+                    version: 1,
+                  },
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                textFormat: 0,
+                version: 1,
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        },
+      },
+      pariticipation: {
+        title: 'Sizinle birlikte olacağız!',
+        subtitle:
+          'Lütfen burada kimin katıldığını ve kimin kuaför/makyaj için geleceğini belirtin.',
+        form: {
+          participants: 'Katılımcılar',
+          addParticipant: 'Katılımcı ekle',
+          paricipantPlaceholder: 'Katılımcının adı',
+          participantsMakeupHair: 'Makyaj / Kuaför Katılımcıları',
+          addParticipantsMakupHair: 'Makyaj / Kuaför Katılımcıları Ekle',
+          makeupHairInfo: 'Kişi başı 60€. Cumartesi sabahı başlar.',
+          buttonText: 'Katılımı onayla',
+          nameMissing: 'Lütfen bir isim girin.',
+        },
+        formSuccess: {
+          backToStartPage: 'Başlangıç sayfasına geri dön',
+          title: 'Katılım onaylandı',
+          subtitle:
+            'Sizinle birlikte olacağız! Katılımınızın herhangi bir değişikliği olursa, bize haber verin.',
+        },
+      },
+      countdown: {
+        title: 'Çok yakında!',
+        days: 'Günler',
+        hours: 'Saatler',
+        minutes: 'Dakikalar',
+        seconds: 'Saniyeler',
+      },
+      location: {
+        image1: locationImage1.id,
+        image2: locationImage2.id,
+        image3: locationImage3.id,
+        title: 'Konum',
+        name: 'Gardos Kulesi',
+        address: 'Grobljanska BB, Belgrad 11080, Sırbistan',
+        buttonText: 'Google Maps',
+        time: '18:00 - 21:00',
+        mapsLink:
+          'https://www.google.com/maps/place/Restaurant+Gardos/@44.848237,20.4044287,16z/data=!3m1!4b1!4m6!3m5!1s0x475a65a0fd0e7c1d:0xba29e72b79de3ac!8m2!3d44.8482371!4d20.409305!16s%2Fg%2F11c5zxfc_d?entry=ttu&g_ep=EgoyMDI0MTAxNi4wIKXMDSoASAFQAw%3D%3D',
+      },
+      footer: {
+        title: 'Daha fazla soru mu var?',
+        subtitle: 'Bizi arayın ya da WhatsApp üzerinden bize yazın!',
+      },
     },
     req,
   })
 
-  const financeCategory = await payload.create({
-    collection: 'categories',
+  payload.logger.info(`— Seeding start-page for sr...`)
+  await payload.updateGlobal({
+    slug: 'start-page',
+    locale: 'sr',
+    publishSpecificLocale: 'sr',
     data: {
-      title: 'Finance',
-    },
-    req,
-  })
-
-  await payload.create({
-    collection: 'categories',
-    data: {
-      title: 'Design',
-    },
-    req,
-  })
-
-  await payload.create({
-    collection: 'categories',
-    data: {
-      title: 'Software',
-    },
-    req,
-  })
-
-  await payload.create({
-    collection: 'categories',
-    data: {
-      title: 'Engineering',
-    },
-    req,
-  })
-
-  let image1ID: number | string = image1Doc.id
-  let image2ID: number | string = image2Doc.id
-  let image3ID: number | string = image3Doc.id
-  let imageHomeID: number | string = imageHomeDoc.id
-
-  if (payload.db.defaultIDType === 'text') {
-    image1ID = `"${image1Doc.id}"`
-    image2ID = `"${image2Doc.id}"`
-    image3ID = `"${image3Doc.id}"`
-    imageHomeID = `"${imageHomeDoc.id}"`
-    demoAuthorID = `"${demoAuthorID}"`
-  }
-
-  payload.logger.info(`— Seeding posts...`)
-
-  // Do not create posts with `Promise.all` because we want the posts to be created in order
-  // This way we can sort them by `createdAt` or `publishedAt` and they will be in the expected order
-  const post1Doc = await payload.create({
-    collection: 'posts',
-    data: JSON.parse(
-      JSON.stringify({ ...post1, categories: [technologyCategory.id] })
-        .replace(/"\{\{IMAGE_1\}\}"/g, String(image1ID))
-        .replace(/"\{\{IMAGE_2\}\}"/g, String(image2ID))
-        .replace(/"\{\{AUTHOR\}\}"/g, String(demoAuthorID)),
-    ),
-    req,
-  })
-
-  const post2Doc = await payload.create({
-    collection: 'posts',
-    data: JSON.parse(
-      JSON.stringify({ ...post2, categories: [newsCategory.id] })
-        .replace(/"\{\{IMAGE_1\}\}"/g, String(image2ID))
-        .replace(/"\{\{IMAGE_2\}\}"/g, String(image3ID))
-        .replace(/"\{\{AUTHOR\}\}"/g, String(demoAuthorID)),
-    ),
-    req,
-  })
-
-  const post3Doc = await payload.create({
-    collection: 'posts',
-    data: JSON.parse(
-      JSON.stringify({ ...post3, categories: [financeCategory.id] })
-        .replace(/"\{\{IMAGE_1\}\}"/g, String(image3ID))
-        .replace(/"\{\{IMAGE_2\}\}"/g, String(image1ID))
-        .replace(/"\{\{AUTHOR\}\}"/g, String(demoAuthorID)),
-    ),
-    req,
-  })
-
-  // update each post with related posts
-  await payload.update({
-    id: post1Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post2Doc.id, post3Doc.id],
-    },
-    req,
-  })
-  await payload.update({
-    id: post2Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post1Doc.id, post3Doc.id],
-    },
-    req,
-  })
-  await payload.update({
-    id: post3Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post1Doc.id, post2Doc.id],
+      general: {
+        weddingDate: '2025-06-14',
+        participationDeadline: '2025-01-31',
+        phoneNumber: '+49 4954 3450492',
+      },
+      start: {
+        backgroundImage: heroCouple.id,
+        title: 'Бегум & Даниел',
+        description: 'Радујемо се што ћемо поделити наш посебан дан са вама!',
+        buttonText: 'Потврди учешће',
+      },
+      information: {
+        title: 'Информације',
+        subtitle: 'Овде ћемо вам делити опште информације. Погледајте овде повремено.',
+        description: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    type: 'text',
+                    detail: 0,
+                    format: 0,
+                    mode: 'normal',
+                    style: '',
+                    text: 'Пример ',
+                    version: 1,
+                  },
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                textFormat: 0,
+                version: 1,
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        },
+      },
+      pariticipation: {
+        title: 'Радујемо се вам!',
+        subtitle:
+          'Молимо вас, наведите ко ће присуствовати и ко жели да дође код фризьера/шминкера.',
+        form: {
+          participants: 'Учесници',
+          addParticipant: 'Додати учесника',
+          paricipantPlaceholder: 'Име учесника',
+          participantsMakeupHair: 'Учесници шминкер/фризьер',
+          addParticipantsMakupHair: 'Додати учеснике шминкер/фризьер',
+          makeupHairInfo: '60€ по особи. Субота рано почиње.',
+          buttonText: 'Потврди учешће',
+          nameMissing: 'Молимо вас, унесите име.',
+        },
+        formSuccess: {
+          backToStartPage: 'Вратите се на почетну страницу',
+          title: 'Учешće потврђено',
+          subtitle: 'Радујемо се вам! Ако се нешто промени у вашем учешću, обавестите нас.',
+        },
+      },
+      countdown: {
+        title: 'Ускоро ће бити!',
+        days: 'Дани',
+        hours: 'Сати',
+        minutes: 'Минуте',
+        seconds: 'Секунде',
+      },
+      location: {
+        image1: locationImage1.id,
+        image2: locationImage2.id,
+        image3: locationImage3.id,
+        title: 'Локација',
+        name: 'Гардос Торањ',
+        address: 'Гробљанска ББ, Београд 11080, Србија',
+        buttonText: 'Google Maps',
+        time: '18:00 - 21:00',
+        mapsLink:
+          'https://www.google.com/maps/place/Restaurant+Gardos/@44.848237,20.4044287,16z/data=!3m1!4b1!4m6!3m5!1s0x475a65a0fd0e7c1d:0xba29e72b79de3ac!8m2!3d44.8482371!4d20.409305!16s%2Fg%2F11c5zxfc_d?entry=ttu&g_ep=EgoyMDI0MTAxNi4wIKXMDSoASAFQAw%3D%3D',
+      },
+      footer: {
+        title: 'Има ли више питања?',
+        subtitle: 'Позовите нас или пишите нам на WhatsApp!',
+      },
     },
     req,
   })

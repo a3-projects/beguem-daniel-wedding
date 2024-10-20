@@ -1,5 +1,4 @@
 import React, { Fragment, JSX } from 'react'
-import { CMSLink } from '@/components/Link'
 import { DefaultNodeTypes } from '@payloadcms/richtext-lexical'
 
 import {
@@ -11,6 +10,7 @@ import {
   IS_SUPERSCRIPT,
   IS_UNDERLINE,
 } from './nodeFormat'
+import { Link } from '@/ui/components/Link'
 
 export type NodeTypes = DefaultNodeTypes
 
@@ -144,15 +144,14 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
             const fields = node.fields
 
             return (
-              <CMSLink
+              <Link
                 key={index}
-                newTab={Boolean(fields?.newTab)}
-                reference={fields.doc as any}
+                target={Boolean(fields?.newTab) ? '_blank' : undefined}
                 type={fields.linkType === 'internal' ? 'reference' : 'custom'}
-                url={fields.url}
+                href={fields.url}
               >
                 {serializedChildren}
-              </CMSLink>
+              </Link>
             )
           }
 

@@ -2,8 +2,6 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
 import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
-import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
-import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import {
   BoldFeature,
@@ -17,25 +15,24 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
-import Categories from './collections/Categories'
 import { Media } from './collections/Media'
-import { Posts } from './collections/Posts'
 import Users from './collections/Users'
 import { seedHandler } from './endpoints/seedHandler'
-import { StartPage } from './StartPage/config'
+import { StartPage } from './globals/StartPage/config'
 
-import { revalidateRedirects } from './hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import { Post } from 'src/payload-types'
+import { en } from '@payloadcms/translations/languages/en'
+import { de } from '@payloadcms/translations/languages/de'
+import { Participation } from '@/collections/Participation'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const generateTitle: GenerateTitle<Post> = ({ doc }) => {
+const generateTitle: GenerateTitle<{ title: string }> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
 }
 
-const generateURL: GenerateURL<Post> = ({ doc }) => {
+const generateURL: GenerateURL<{ slug: string }> = ({ doc }) => {
   return doc?.slug
     ? `${process.env.NEXT_PUBLIC_SERVER_URL!}/${doc.slug}`
     : process.env.NEXT_PUBLIC_SERVER_URL!
@@ -46,6 +43,10 @@ export default buildConfig({
     locales: ['de', 'tr', 'sr'], // required
     defaultLocale: 'de', // required
     fallback: true,
+  },
+  i18n: {
+    // @ts-ignore seems to work even with error
+    supportedLanguages: { en, de },
   },
   admin: {
     components: {
@@ -86,39 +87,13 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: lexicalEditor({
     features: () => {
-      return [
-        UnderlineFeature(),
-        BoldFeature(),
-        ItalicFeature(),
-        LinkFeature({
-          enabledCollections: ['posts'],
-          fields: ({ defaultFields }) => {
-            const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
-              if ('name' in field && field.name === 'url') return false
-              return true
-            })
-
-            return [
-              ...defaultFieldsWithoutUrl,
-              {
-                name: 'url',
-                type: 'text',
-                admin: {
-                  condition: ({ linkType }) => linkType !== 'internal',
-                },
-                label: ({ t }) => t('fields:enterURL'),
-                required: true,
-              },
-            ]
-          },
-        }),
-      ]
+      return [UnderlineFeature(), BoldFeature(), ItalicFeature()]
     },
   }),
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Posts, Media, Categories, Users],
+  collections: [Media, Participation, Users],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
@@ -132,31 +107,6 @@ export default buildConfig({
   ],
   globals: [StartPage],
   plugins: [
-    redirectsPlugin({
-      collections: ['posts'],
-      overrides: {
-        // @ts-expect-error
-        fields: ({ defaultFields }) => {
-          return defaultFields.map((field) => {
-            if ('name' in field && field.name === 'from') {
-              return {
-                ...field,
-                admin: {
-                  description: 'You will need to rebuild the website when changing this field.',
-                },
-              }
-            }
-            return field
-          })
-        },
-        hooks: {
-          afterChange: [revalidateRedirects],
-        },
-      },
-    }),
-    nestedDocsPlugin({
-      collections: ['categories'],
-    }),
     seoPlugin({
       generateTitle,
       generateURL,
