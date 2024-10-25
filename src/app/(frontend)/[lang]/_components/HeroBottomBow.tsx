@@ -48,7 +48,7 @@ export const HeroBottomBow = (props: HeroBottomBowProps & ComponentProps<'sectio
     <section className={cn(styles.base(), className)} {...rest}>
       <Image
         priority
-        className="w-full h-full object-cover block absolute -z-10"
+        className="w-full h-full object-cover block absolute -z-10 hero-image"
         src={extractString(backgroundImage, 'url')}
         fill
         alt=""
@@ -59,13 +59,24 @@ export const HeroBottomBow = (props: HeroBottomBowProps & ComponentProps<'sectio
       <div className={styles.body()}>
         <div>
           <div className="relative">
-            <div className="w-[20%] bottom-0 border border-white/20 -translate-x-[20%] z-10 translate-y-[50%] aspect-square rounded-full absolute bg-white/10"></div>
-            <div className="w-[30%] bottom-0 border border-white/20 -translate-x-[60%] -z-10 aspect-square rounded-full absolute bg-white/10"></div>
-            <div className="w-[10%] bottom-0 border border-white/20 translate-x-[200%] z-10 -translate-y-[300%] aspect-square rounded-full absolute bg-white/10"></div>
-            <div className="w-[15%] bottom-0 right-0 border border-white/20 -translate-x-[150%] z-10 -translate-y-[100%] aspect-square rounded-full absolute bg-white/10"></div>
-            <div className="w-[20%] bottom-0 right-0 border border-white/20 translate-x-[50%] z-10 translate-y-[70%] aspect-square rounded-full absolute bg-white/10"></div>
-            <div className="w-[25%] bottom-0 right-0 border border-white/20 translate-x-[20%] z-10 translate-y-[10%] aspect-square rounded-full absolute bg-white/10"></div>
-
+            <div className="hero-circle w-[20%] bottom-0 -translate-x-[20%]  z-10 translate-y-[50%] absolute">
+              <div className="border border-white/20  aspect-square rounded-full  bg-white/10"></div>
+            </div>
+            <div className="hero-circle w-[12%] bottom-0 -translate-x-[60%] -z-10 absolute">
+              <div className="border border-white/20  aspect-square rounded-full bg-white/10"></div>
+            </div>
+            <div className="hero-circle w-[10%] bottom-0 translate-x-[200%]  z-10 -translate-y-[300%] absolute">
+              <div className="border border-white/20  aspect-square rounded-full  bg-white/10"></div>
+            </div>
+            <div className="hero-circle w-[15%] bottom-0  right-0 -translate-x-[150%] z-10 -translate-y-[100%] absolute">
+              <div className="delay-300 border border-white/20 aspect-square rounded-full  bg-white/10"></div>
+            </div>
+            <div className="hero-circle w-[20%] bottom-0 right-0 translate-x-[50%] z-10 translate-y-[70%] absolute">
+              <div className="border border-white/20 aspect-square rounded-full bg-white/10"></div>
+            </div>
+            <div className="hero-circle w-[25%] bottom-0 right-0  translate-x-[20%] z-10 translate-y-[10%] absolute">
+              <div className="border border-white/20 aspect-square rounded-full  bg-white/10"></div>
+            </div>
             <Text ty="hero" as="h1" className={styles.title()}>
               {title}
             </Text>
