@@ -15,6 +15,8 @@ import { Link } from '@/ui/components/Link'
 
 import Image from 'next/image'
 import babyEucalyptus from './_images/baby-eucalyptus.png'
+import logo from './_images/beguem-daniel-logo-diamond.svg'
+
 export async function generateStaticParams() {
   return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
 }
@@ -48,20 +50,23 @@ export default async function Page({ params: paramsPromise }: Args) {
     <>
       <section
         id="home"
-        className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-secondary-50 ~px-4/8"
+        className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-primary-50/50 heropattern-texture-primary-100 ~px-4/8"
       >
-        <Image
+        {/* <Image
           className="-right-[10%] opacity-20 fixed w-full z-0 pointer-events-none "
           alt=""
           src={babyEucalyptus}
-        />
+        /> */}
 
         <div className="relative z-10 mx-auto flex max-w-prose flex-col items-center justify-center">
-          <CheckCircleIcon className=" text-secondary-400" strokeWidth={2} size="50" />
+          <Image className="" width={160} alt="" src={logo} />
+          <div className="flex gap-2 items-center ~mt-8/12">
+            <CheckCircleIcon className=" text-secondary-400" strokeWidth={1} size="40" />
+            <Text as="h1" ty="h4" className="text-center  font-serif">
+              {formSuccess.title}
+            </Text>
+          </div>
 
-          <Text as="h1" ty="h3" className="text-center ~mt-8/12 font-serif">
-            {formSuccess.title}
-          </Text>
           <Text ty="subtitle" className="text-center ~mt-8/12">
             {formSuccess.subtitle}
           </Text>

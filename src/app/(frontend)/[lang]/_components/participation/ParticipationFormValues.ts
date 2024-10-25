@@ -6,8 +6,8 @@ export const getParticipationSchema = (errorMessages?: StartPage['pariticipation
     participants: z.array(
       z.object({
         name: z.string().min(1, errorMessages?.nameMissing),
-        makeup: z.boolean(),
-        hairdresser: z.boolean(),
+        makeup: z.boolean().optional(),
+        hairdresser: z.boolean().optional(),
       }),
     ),
     participantsKid: z.array(z.object({ name: z.string() })),

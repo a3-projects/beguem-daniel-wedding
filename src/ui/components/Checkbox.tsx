@@ -48,7 +48,6 @@ export function Checkbox(props: CheckboxProps) {
     ...context,
     ...props,
   }
-  console.log(rest.state)
   const { base } = checkbox()
   return (
     <RACCheckbox

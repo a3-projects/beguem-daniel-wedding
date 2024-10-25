@@ -3,7 +3,7 @@ import type { ProgressBarProps } from 'react-aria-components'
 
 export const PendingProgressCircle = (props: ProgressBarProps) => {
   return (
-    <ProgressBar {...props}>
+    <ProgressBar aria-label="progress loading" {...props}>
       <svg width="24" height="24" viewBox="0 0 24 24" className="d-block">
         <path
           fill="currentColor"

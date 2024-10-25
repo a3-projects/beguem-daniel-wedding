@@ -8,7 +8,7 @@ import { participate } from '@/app/(frontend)/actions/participate'
 import { Button } from '@/ui/components/Button'
 import { TextField } from '@/ui/components/TextField'
 import { InfoIcon, PlusIcon, Trash2Icon, TrashIcon, XIcon } from 'lucide-react'
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useTransition } from 'react'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { StartPage } from '@/payload-types'
@@ -38,13 +38,17 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
     },
   })
 
-  const [state, participateAction, isPending] = useActionState(participate, null)
+  const [state, participateAction] = useActionState(participate, null)
+  const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const params = useParams()
 
   const handleFormSubmit = handleSubmit(async (data, e) => {
     e?.preventDefault()
-    await participateAction(data)
+    console.log('submit')
+    startTransition(async () => {
+      await participateAction(data)
+    })
 
     router.push(`/${params.lang}/participiation-successfully-sent`)
   })
@@ -90,9 +94,8 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
     >
       <div className="flex flex-col ~gap-2/4">
         {participantFields.map((field, index) => (
-          <div className="flex gap-4">
+          <div className="flex gap-4" key={field.id}>
             <TextField
-              key={field.id}
               placeholder={translations.form.paricipantPlaceholder}
               endSlot={
                 index > 0 && (
@@ -124,6 +127,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
                     <Checkbox isSelected={field.value} onChange={field.onChange} />
                   )}
                 />
+                {errors.participants?.[index]?.hairdresser?.message}
               </div>
             </div>
             <div className="flex flex-col items-center ">
