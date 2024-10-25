@@ -1,7 +1,7 @@
 'use client'
 
 import { forwardRef } from 'react'
-import type { ComponentRef, ComponentPropsWithoutRef } from 'react'
+import type { ComponentRef, ComponentPropsWithoutRef, ComponentProps } from 'react'
 import { tv } from 'tailwind-variants'
 import type { VariantProps } from 'tailwind-variants'
 import { useFormFieldContext } from './FormField'
@@ -56,42 +56,36 @@ export interface InputProps extends Omit<VariantProps<typeof input>, 'startSlot'
   baseProps?: ComponentPropsWithoutRef<'div'>
 }
 
-const _Input = forwardRef<ComponentRef<'input'>, InputProps & ComponentPropsWithoutRef<'input'>>(
-  (props, ref) => {
-    let context: ReturnType<typeof useFormFieldContext> | undefined = undefined
-    try {
-      context = useFormFieldContext()
-    } catch (e) {
-      // do nothing
-    }
-    const { children, className, state, startSlot, endSlot, baseProps, ...rest } = {
-      ...context,
-      ...props,
-    }
-    const { className: baseClassName, ...baseRest } = baseProps ?? {}
+const _Input = (props: InputProps & ComponentProps<'input'>) => {
+  const context = useFormFieldContext()
 
-    const { base, inputElement } = input({
-      state,
-      startSlot: !!startSlot,
-      endSlot: !!endSlot,
-    })
-    return (
-      <div className={cn(base(), baseClassName)} {...baseRest}>
-        {startSlot}
-        <input
-          ref={ref}
-          className={cn(
-            inputElement(),
+  const { children, className, state, startSlot, endSlot, baseProps, ref, ...rest } = {
+    ...context,
+    ...props,
+  }
+  const { className: baseClassName, ...baseRest } = baseProps ?? {}
 
-            className,
-          )}
-          {...rest}
-        />
-        {endSlot}
-      </div>
-    )
-  },
-)
+  const { base, inputElement } = input({
+    state,
+    startSlot: !!startSlot,
+    endSlot: !!endSlot,
+  })
+  return (
+    <div className={cn(base(), baseClassName)} {...baseRest}>
+      {startSlot}
+      <input
+        ref={ref}
+        className={cn(
+          inputElement(),
+
+          className,
+        )}
+        {...rest}
+      />
+      {endSlot}
+    </div>
+  )
+}
 
 export const inputAffix = tv({
   base: '',

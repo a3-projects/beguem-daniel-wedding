@@ -37,13 +37,8 @@ export const checkbox = tv({
   },
 })
 
-export function Checkbox(props: CheckboxProps) {
-  let context: ReturnType<typeof useFormFieldContext> | undefined = undefined
-  try {
-    context = useFormFieldContext()
-  } catch (e) {
-    // do nothing
-  }
+export const Checkbox = (props: CheckboxProps) => {
+  const context = useFormFieldContext()
   const { children, className, ...rest } = {
     ...context,
     ...props,

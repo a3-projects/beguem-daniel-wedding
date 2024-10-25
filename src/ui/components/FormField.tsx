@@ -37,10 +37,7 @@ const _FormField = (props: FormFieldProps & ComponentPropsWithRef<'div'>) => {
 export const FormFieldContext = createContext<Pick<FormFieldProps, 'state'> | undefined>(undefined)
 export const useFormFieldContext = () => {
   const context = useContext(FormFieldContext)
-  if (!context)
-    throw new Error(
-      'FormFieldContext used without Provider in the parent tree. Please make sure your component is a child of AAlert.',
-    )
+  if (!context) return {}
   return context
 }
 
