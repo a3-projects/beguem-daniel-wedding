@@ -35,6 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           sizes="32x32"
           media="(prefers-color-scheme: dark)"
         />
+        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
         <link
           href="/favicon.svg"
           rel="icon"
@@ -47,7 +48,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           type="image/svg+xml"
           media="(prefers-color-scheme: dark)"
         />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
         <Providers>
