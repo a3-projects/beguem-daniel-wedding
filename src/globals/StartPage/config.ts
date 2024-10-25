@@ -146,6 +146,7 @@ export const StartPage: GlobalConfig = {
               localized: true,
               required: true,
             },
+
             {
               name: 'addParticipant',
               label: 'Teilnehmer hinzufügen',
@@ -153,25 +154,52 @@ export const StartPage: GlobalConfig = {
               localized: true,
               required: true,
             },
+
             {
-              name: 'participantsMakeupHair',
-              label: 'Teilnehmer Make Up / Friseur',
+              name: 'participantKid',
+              label: 'Teilnehmer Kind',
               type: 'text',
               localized: true,
               required: true,
             },
             {
-              name: 'addParticipantsMakupHair',
-              label: 'Make Up / Friseur Teilnehmer hinzufügen',
+              name: 'paricipantKidPlaceholder',
+              label: 'Name des Kindes',
               type: 'text',
               localized: true,
               required: true,
             },
+            {
+              name: 'addParticipantKid',
+              label: 'Kind hinzufügen',
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+
             {
               name: 'makeupHairInfo',
-              label: 'Information Make Up / Friseur',
+              label: 'Information Makeup / Friseur',
               type: 'text',
               localized: true,
+              required: true,
+            },
+            {
+              name: 'makeupHairPrice',
+              label: 'Preis Makeup / Friseur',
+              type: 'number',
+              required: true,
+            },
+            {
+              name: 'makeup',
+              label: 'Makeup',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'hairdresser',
+              label: 'Friseur',
+              type: 'text',
               required: true,
             },
             {

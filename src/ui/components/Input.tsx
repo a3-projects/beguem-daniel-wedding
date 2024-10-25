@@ -13,18 +13,18 @@ export const input = tv({
   slots: {
     base: 'overflow-hidden autofill-style flex ~text-sm/base items-center border-2 border-solid w-full bg-white transition-[border-color] ease-in-out group focus-within:outline focus-within:outline-4',
     inputElement:
-      'placeholder-neutral-400 w-full text-ellipsis outline-none h-full min-h-[theme("spacing.12")] bg-transparent ',
+      'placeholder-neutral-400 w-full text-ellipsis outline-none h-full min-h-input bg-transparent ',
   },
   variants: {
     startSlot: {
       false: {
-        inputElement: 'pl-4',
+        inputElement: 'pl-2',
       },
       true: {},
     },
     endSlot: {
       false: {
-        inputElement: 'pr-4',
+        inputElement: 'pr-2',
       },
       true: {},
     },
@@ -97,8 +97,8 @@ export const inputAffix = tv({
   base: '',
   variants: {
     size: {
-      md: 'px-2',
-      lg: 'px-3',
+      md: 'px-1',
+      lg: 'px-2',
     },
   },
   defaultVariants: {

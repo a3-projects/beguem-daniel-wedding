@@ -74,13 +74,15 @@ export interface Participation {
   id: string;
   participants?:
     | {
-        name?: string | null;
+        name: string;
+        makeup?: boolean | null;
+        hairdresser?: boolean | null;
         id?: string | null;
       }[]
     | null;
-  participantsMakeupHair?:
+  participantsKid?:
     | {
-        name?: string | null;
+        name: string;
         id?: string | null;
       }[]
     | null;
@@ -209,9 +211,13 @@ export interface StartPage {
       participants: string;
       paricipantPlaceholder: string;
       addParticipant: string;
-      participantsMakeupHair: string;
-      addParticipantsMakupHair: string;
+      participantKid: string;
+      paricipantKidPlaceholder: string;
+      addParticipantKid: string;
       makeupHairInfo: string;
+      makeupHairPrice: number;
+      makeup: string;
+      hairdresser: string;
       buttonText: string;
       nameMissing: string;
     };

@@ -7,13 +7,15 @@ import {
 import { participate } from '@/app/(frontend)/actions/participate'
 import { Button } from '@/ui/components/Button'
 import { TextField } from '@/ui/components/TextField'
-import { InfoIcon, PlusIcon, XIcon } from 'lucide-react'
+import { InfoIcon, PlusIcon, Trash2Icon, TrashIcon, XIcon } from 'lucide-react'
 import { useActionState, useEffect } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { StartPage } from '@/payload-types'
 import { Text } from '@/ui/components/Text'
 import { useParams, useRouter } from 'next/navigation'
+import { Checkbox } from '@/ui/components/Checkbox'
+import { cn } from '@/ui/utils/utils'
 
 export interface ParticipationFormProps {
   translations: StartPage['pariticipation']
@@ -25,13 +27,14 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
     handleSubmit,
     register,
     control,
+    watch,
     formState: { errors, isSubmitting, isDirty },
   } = useForm<ParticipationFormValues>({
     resolver: zodResolver(getParticipationSchema(translations.form)),
     mode: 'onBlur',
     defaultValues: {
       participants: [{ name: '' }],
-      participantsMakeupHair: [{ name: '' }],
+      participantsKid: [{ name: '' }],
     },
   })
 
@@ -55,13 +58,27 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
   })
 
   const {
-    fields: participantMakeupHairFields,
-    append: addParticipantMakeupHair,
-    remove: removeParticipantMakeupHair,
+    fields: participantKidFields,
+    append: addParticipantKid,
+    remove: removeParticipantKid,
   } = useFieldArray({
     control,
-    name: 'participantsMakeupHair',
+    name: 'participantsKid',
   })
+
+  const participants = watch('participants')
+
+  const makeupHairSum =
+    participants.reduce((sum, participant) => {
+      if (participant.hairdresser) {
+        sum++
+      }
+      if (participant.makeup) {
+        sum++
+      }
+
+      return sum
+    }, 0) * translations.form.makeupHairPrice
 
   return (
     <form
@@ -73,32 +90,62 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
     >
       <div className="flex flex-col ~gap-2/4">
         {participantFields.map((field, index) => (
-          <TextField
-            key={field.id}
-            placeholder={translations.form.paricipantPlaceholder}
-            endSlot={
-              index > 0 && (
-                <TextField.Affix>
-                  <Button
-                    onPress={() => removeParticipant(index)}
-                    color="neutral"
-                    variant="ghost"
-                    circle
-                  >
-                    <XIcon />
-                  </Button>
-                </TextField.Affix>
-              )
-            }
-            label={index === 0 ? translations.form.participants : ''}
-            errors={errors.participants?.[index]?.name}
-            {...register(`participants.${index}.name`)}
-          />
+          <div className="flex gap-4">
+            <TextField
+              key={field.id}
+              placeholder={translations.form.paricipantPlaceholder}
+              endSlot={
+                index > 0 && (
+                  <TextField.Affix>
+                    <Button
+                      onPress={() => removeParticipant(index)}
+                      color="neutral"
+                      variant="ghost"
+                      circle
+                    >
+                      <Trash2Icon />
+                    </Button>
+                  </TextField.Affix>
+                )
+              }
+              label={index === 0 ? translations.form.participants : ''}
+              errors={errors.participants?.[index]?.name}
+              {...register(`participants.${index}.name`)}
+            />
+            <div className="flex flex-col items-center ">
+              <div className={cn({ 'opacity-0 h-0': index > 0 }, 'pb-1')}>
+                {translations.form.hairdresser}*
+              </div>
+              <div className="max-h-input flex items-center justify-center flex-grow">
+                <Controller
+                  name={`participants.${index}.hairdresser`}
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox isSelected={field.value} onChange={field.onChange} />
+                  )}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center ">
+              <div className={cn({ 'opacity-0 h-0': index > 0 }, 'pb-1')}>
+                {translations.form.makeup}*
+              </div>
+              <div className="max-h-input flex items-center justify-center flex-grow text-wrap-none">
+                <Controller
+                  name={`participants.${index}.makeup`}
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox isSelected={field.value} onChange={field.onChange} />
+                  )}
+                />
+              </div>
+            </div>
+          </div>
         ))}
 
         <Button
           className="self-start"
-          onPress={() => addParticipant({ name: '' })}
+          onPress={() => addParticipant({ name: '', makeup: false, hairdresser: false })}
           variant="outline"
           color="secondary"
           size="sm"
@@ -108,44 +155,38 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
           </Button.Start>
           {translations.form.addParticipant}
         </Button>
+        <Text ty="caption" className="fl-text-step--1 flex gap-1 text-neutral-500">
+          *{translations.form.makeupHairInfo} ({makeupHairSum}€)
+        </Text>
       </div>
-
       <div className="flex flex-col ~gap-2/4">
-        {participantMakeupHairFields.map((field, index) => (
+        {participantKidFields.map((field, index) => (
           <TextField
             key={field.id}
-            placeholder={translations.form.paricipantPlaceholder}
+            placeholder={translations.form.paricipantKidPlaceholder}
             endSlot={
               index > 0 && (
                 <TextField.Affix>
                   <Button
-                    onPress={() => removeParticipantMakeupHair(index)}
+                    onPress={() => removeParticipantKid(index)}
                     color="neutral"
                     variant="ghost"
                     circle
                   >
-                    <XIcon />
+                    <Trash2Icon />
                   </Button>
                 </TextField.Affix>
               )
             }
-            captionSlot={
-              index === 0 && (
-                <Text ty="caption" className="fl-text-step--1 flex gap-1 text-neutral-500">
-                  <InfoIcon className="svg-font-size-scale mt-[3px]" />{' '}
-                  {translations.form.makeupHairInfo}
-                </Text>
-              )
-            }
-            label={index === 0 ? translations.form.participantsMakeupHair : ''}
-            errors={errors.participantsMakeupHair?.[index]?.name}
-            {...register(`participantsMakeupHair.${index}.name`)}
+            label={index === 0 ? translations.form.participantKid : ''}
+            errors={errors.participantsKid?.[index]?.name}
+            {...register(`participantsKid.${index}.name`)}
           />
         ))}
 
         <Button
           className="self-start"
-          onPress={() => addParticipantMakeupHair({ name: '' })}
+          onPress={() => addParticipantKid({ name: '' })}
           variant="outline"
           color="secondary"
           size="sm"
@@ -153,7 +194,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
           <Button.Start>
             <PlusIcon />
           </Button.Start>
-          {translations.form.addParticipant}
+          {translations.form.addParticipantKid}
         </Button>
       </div>
 

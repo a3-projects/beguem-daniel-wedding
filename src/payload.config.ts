@@ -24,6 +24,7 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { en } from '@payloadcms/translations/languages/en'
 import { de } from '@payloadcms/translations/languages/de'
 import { Participation } from '@/collections/Participation'
+import { participationsExport } from '@/endpoints/participations-export'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -99,6 +100,11 @@ export default buildConfig({
   endpoints: [
     // The seed endpoint is used to populate the database with some example data
     // You should delete this endpoint before deploying your site to production
+    {
+      handler: participationsExport,
+      method: 'get',
+      path: '/participations-export',
+    },
     {
       handler: seedHandler,
       method: 'get',

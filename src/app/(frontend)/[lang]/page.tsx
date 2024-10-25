@@ -6,8 +6,6 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { TypedLocale } from 'payload'
 import { notFound, redirect } from 'next/navigation'
-import { Button } from '@/ui/components/Button'
-import { Main } from '@/ui/components/Main'
 import { HeroBottomBow } from '@/app/(frontend)/[lang]/_components/HeroBottomBow'
 import { SectionCountdown } from '@/app/(frontend)/[lang]/_components/countdown/SectionCountdown'
 import { Countdown } from '@/app/(frontend)/[lang]/_components/countdown/Countdown'
@@ -18,6 +16,8 @@ import { SectionInformation } from '@/app/(frontend)/[lang]/_components/SectionI
 import { LanguageSelect } from '@/app/(frontend)/[lang]/_components/LanguageSelect'
 import { ButtonLink } from '@/ui/components/ButtonLink'
 import { text } from '@/ui/components/Text'
+import Image from 'next/image'
+
 export async function generateStaticParams() {
   return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
 }
@@ -81,7 +81,9 @@ export default async function Page({ params: paramsPromise }: Args) {
         {location && <SectionLocation translations={location} />}
 
         {information && <SectionInformation translations={information} />}
+
         {pariticipation && <SectionParticipation translations={pariticipation} />}
+
         {footer && <Footer translations={footer} phoneNumber={general.phoneNumber} />}
       </div>
     </>

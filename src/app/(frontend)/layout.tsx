@@ -28,6 +28,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html className={cn(sansFont.variable, serifFont.variable)} lang="de" suppressHydrationWarning>
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
+        <link href="/favicon.ico" rel="icon" sizes="32x32" media="(prefers-color-scheme: light)" />
+        <link
+          href="/favicon-dark.ico"
+          rel="icon"
+          sizes="32x32"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          href="/favicon.svg"
+          rel="icon"
+          type="image/svg+xml"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          href="/favicon-dark.svg"
+          rel="icon"
+          type="image/svg+xml"
+          media="(prefers-color-scheme: dark)"
+        />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>

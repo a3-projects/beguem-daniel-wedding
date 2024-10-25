@@ -18,9 +18,15 @@ export default {
       serif: ['var(--font-serif)', ...defaultTheme.fontFamily.serif],
     },
     extend: {
-      spacing: { header: '4rem', input: '35rem' },
+      spacing: { header: '4rem', input: '35rem', inputHeight: '3.25rem' },
       maxWidth: {
         input: '35rem',
+      },
+      minHeight: {
+        input: '3.25rem',
+      },
+      maxHeight: {
+        input: '3.25rem',
       },
       colors: {
         primary: {

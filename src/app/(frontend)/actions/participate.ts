@@ -17,7 +17,7 @@ export const participate = async (prevState: any, values: ParticipationFormValue
       collection: 'participation',
       data: {
         participants: res.data.participants,
-        participantsMakeupHair: res.data.participantsMakeupHair,
+        participantsKid: res.data.participantsKid,
       },
     })
   }
