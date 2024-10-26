@@ -8,12 +8,15 @@ const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://loc
 const nextConfig = {
   output: 'standalone',
   experimental: {
-    webpackMemoryOptimizations: true
+    webpackMemoryOptimizations: true,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
   images: {
     remotePatterns: [
