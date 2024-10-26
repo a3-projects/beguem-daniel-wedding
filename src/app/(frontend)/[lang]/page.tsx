@@ -18,9 +18,9 @@ import { ButtonLink } from '@/ui/components/ButtonLink'
 import { text } from '@/ui/components/Text'
 import Image from 'next/image'
 
-// export async function generateStaticParams() {
-//   return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
-// }
+export async function generateStaticParams() {
+  return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
+}
 
 type Args = {
   params: Promise<{
