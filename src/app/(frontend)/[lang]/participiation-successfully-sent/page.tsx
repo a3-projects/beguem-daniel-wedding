@@ -17,9 +17,9 @@ import Image from 'next/image'
 import babyEucalyptus from './_images/baby-eucalyptus.png'
 import logo from './_images/beguem-daniel-logo-diamond.svg'
 
-export async function generateStaticParams() {
-  return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
-}
+// export async function generateStaticParams() {
+//   return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
+// }
 
 type Args = {
   params: Promise<{
