@@ -59,7 +59,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
     } else if (state?.error) {
       console.error('Error:', state.error)
     }
-  }, [state])
+  }, [state, router, params.lang])
 
   const {
     fields: participantFields,

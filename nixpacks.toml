@@ -1,2 +1,4 @@
 [phases.build]
 cmds = ["pnpm run migrate", "pnpm run build"]
+[start]
+cmd = "node .next/standalone/server.js"
