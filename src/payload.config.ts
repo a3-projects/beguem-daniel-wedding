@@ -129,6 +129,7 @@ export default buildConfig({
           secretAccessKey: process.env.MINIO_ROOT_PASSWORD || '',
         },
         endpoint: process.env.MINIO_ADDRESS || '',
+        region: 'eu-central-1',
       },
     }),
   ],
