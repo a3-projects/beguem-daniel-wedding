@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename)
 
 const mediaFolder = path.resolve(__dirname, 'media')
 
-const adminUserEmail = 'oemer.aran95+bdw@gmail.com'
+const adminUserEmail = 'oemer.aran95+bdw2@gmail.com'
 
 export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   await initTransaction(req)
