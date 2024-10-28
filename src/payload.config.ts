@@ -1,7 +1,6 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
-import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import {
   BoldFeature,
@@ -25,6 +24,7 @@ import { en } from '@payloadcms/translations/languages/en'
 import { de } from '@payloadcms/translations/languages/de'
 import { Participation } from '@/collections/Participation'
 import { participationsExport } from '@/endpoints/participations-export'
+import { s3Storage } from '@payloadcms/storage-s3'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -118,7 +118,19 @@ export default buildConfig({
       generateURL,
     }),
 
-    payloadCloudPlugin(), // storage-adapter-placeholder
+    s3Storage({
+      collections: {
+        media: true,
+      },
+      bucket: process.env.MINIO_BUCKET || '',
+      config: {
+        credentials: {
+          accessKeyId: process.env.MINIO_ROOT_USER || '',
+          secretAccessKey: process.env.MINIO_ROOT_PASSWORD || '',
+        },
+        endpoint: process.env.MINIO_ADDRESS || '',
+      },
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET!,
   sharp,
