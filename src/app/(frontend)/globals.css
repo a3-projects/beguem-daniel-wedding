@@ -22,12 +22,12 @@
 html {
   scroll-behavior: smooth;
 }
-
+/* 
 .hero-circle > div {
   animation: heroCircle infinite ease-in-out both;
 }
 .hero-circle:nth-child(1) > div {
-  animation-duration: 8s;
+  animation-duration: 18s;
   animation-delay: 1s;
 }
 .hero-circle:nth-child(2) > div {
@@ -35,7 +35,7 @@ html {
   animation-delay: 2s;
 }
 .hero-circle:nth-child(3) > div {
-  animation-duration: 5s;
+  animation-duration: 15s;
   animation-delay: 0s;
 }
 .hero-circle:nth-child(4) > div {
@@ -43,7 +43,7 @@ html {
   animation-delay: 3s;
 }
 .hero-circle:nth-child(5) > div {
-  animation-duration: 6s;
+  animation-duration: 16s;
   animation-delay: 0s;
 }
 .hero-circle:nth-child(6) > div {
@@ -52,9 +52,9 @@ html {
 }
 @keyframes heroCircle {
   0% {
-    transform: scale(0.5) translateY(100%);
+    transform: translateY(100%);
 
-    opacity: 0;
+    opacity: 1;
   }
 
   60% {
@@ -62,7 +62,7 @@ html {
   }
 
   100% {
-    transform: scale(1) translateY(-100%);
+    transform: translateY(-100%);
     opacity: 0;
   }
-}
+} */

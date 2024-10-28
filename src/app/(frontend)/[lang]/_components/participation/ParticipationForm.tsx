@@ -7,7 +7,7 @@ import {
 import { participate } from '@/app/(frontend)/actions/participate'
 import { Button } from '@/ui/components/Button'
 import { TextField } from '@/ui/components/TextField'
-import { InfoIcon, PlusIcon, Trash2Icon, TrashIcon, XIcon } from 'lucide-react'
+import { AlertCircleIcon, PlusIcon, Trash2Icon } from 'lucide-react'
 import { useActionState, useEffect, useTransition } from 'react'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,11 +18,13 @@ import { Checkbox } from '@/ui/components/Checkbox'
 import { cn } from '@/ui/utils/utils'
 
 export interface ParticipationFormProps {
-  translations: StartPage['pariticipation']
+  startPage: StartPage
 }
 
 export const ParticipationForm = (props: ParticipationFormProps) => {
-  const { translations } = props
+  const {
+    startPage: { pariticipation, general },
+  } = props
   const {
     handleSubmit,
     register,
@@ -30,7 +32,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
     watch,
     formState: { errors, isSubmitting, isDirty },
   } = useForm<ParticipationFormValues>({
-    resolver: zodResolver(getParticipationSchema(translations.form)),
+    resolver: zodResolver(getParticipationSchema(pariticipation.form)),
     mode: 'onBlur',
     defaultValues: {
       participants: [{ name: '' }],
@@ -38,20 +40,27 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
     },
   })
 
-  const [state, participateAction] = useActionState(participate, null)
+  const [state, participateAction, _] = useActionState(participate, null)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const params = useParams()
 
   const handleFormSubmit = handleSubmit(async (data, e) => {
     e?.preventDefault()
-    console.log('submit')
+
     startTransition(async () => {
       await participateAction(data)
     })
-
-    router.push(`/${params.lang}/participiation-successfully-sent`)
   })
+
+  useEffect(() => {
+    if (state?.success) {
+      router.push(`/${params.lang}/participiation-successfully-sent`)
+    } else if (state?.error) {
+      console.error('Error:', state.error)
+    }
+  }, [state])
+
   const {
     fields: participantFields,
     append: addParticipant,
@@ -82,7 +91,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
       }
 
       return sum
-    }, 0) * translations.form.makeupHairPrice
+    }, 0) * pariticipation.form.makeupHairPrice
 
   return (
     <form
@@ -96,7 +105,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
         {participantFields.map((field, index) => (
           <div className="flex gap-4" key={field.id}>
             <TextField
-              placeholder={translations.form.paricipantPlaceholder}
+              placeholder={pariticipation.form.paricipantPlaceholder}
               endSlot={
                 index > 0 && (
                   <TextField.Affix>
@@ -111,13 +120,13 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
                   </TextField.Affix>
                 )
               }
-              label={index === 0 ? translations.form.participants : ''}
+              label={index === 0 ? pariticipation.form.participants : ''}
               errors={errors.participants?.[index]?.name}
               {...register(`participants.${index}.name`)}
             />
             <div className="flex flex-col items-center ">
               <div className={cn({ 'opacity-0 h-0': index > 0 }, 'pb-1')}>
-                {translations.form.hairdresser}*
+                {pariticipation.form.hairdresser}*
               </div>
               <div className="max-h-input flex items-center justify-center flex-grow">
                 <Controller
@@ -132,7 +141,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
             </div>
             <div className="flex flex-col items-center ">
               <div className={cn({ 'opacity-0 h-0': index > 0 }, 'pb-1')}>
-                {translations.form.makeup}*
+                {pariticipation.form.makeup}*
               </div>
               <div className="max-h-input flex items-center justify-center flex-grow text-wrap-none">
                 <Controller
@@ -157,17 +166,17 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
           <Button.Start>
             <PlusIcon />
           </Button.Start>
-          {translations.form.addParticipant}
+          {pariticipation.form.addParticipant}
         </Button>
         <Text ty="caption" className="fl-text-step--1 flex gap-1 text-neutral-500">
-          *{translations.form.makeupHairInfo} ({makeupHairSum}€)
+          *{pariticipation.form.makeupHairInfo} ({makeupHairSum}€)
         </Text>
       </div>
       <div className="flex flex-col ~gap-2/4">
         {participantKidFields.map((field, index) => (
           <TextField
             key={field.id}
-            placeholder={translations.form.paricipantKidPlaceholder}
+            placeholder={pariticipation.form.paricipantKidPlaceholder}
             endSlot={
               index > 0 && (
                 <TextField.Affix>
@@ -182,7 +191,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
                 </TextField.Affix>
               )
             }
-            label={index === 0 ? translations.form.participantKid : ''}
+            label={index === 0 ? pariticipation.form.participantKid : ''}
             errors={errors.participantsKid?.[index]?.name}
             {...register(`participantsKid.${index}.name`)}
           />
@@ -198,13 +207,30 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
           <Button.Start>
             <PlusIcon />
           </Button.Start>
-          {translations.form.addParticipantKid}
+          {pariticipation.form.addParticipantKid}
         </Button>
       </div>
 
       <Button size="lg" isPending={isPending || isSubmitting} type="submit">
-        {translations.form.buttonText}
+        {pariticipation.form.buttonText}
       </Button>
+      {state?.error && (
+        <Text
+          as="div"
+          className="bg-red-50  ~p-4/8  border border-destructive-500 flex gap-2 ~mt-2"
+        >
+          <AlertCircleIcon className=" flex-shrink-0 mt-[5px] svg-font-size-scale flex gap-4 text-destructive-500" />
+          <div>
+            <p>{pariticipation.form.unexpectedError}</p>
+            <a
+              href={`tel:${general.phoneNumber}`}
+              className="block underline-offset-2 underline mt-4"
+            >
+              <p>{general.phoneNumber}</p>
+            </a>
+          </div>
+        </Text>
+      )}
     </form>
   )
 }

@@ -1,20 +1,13 @@
-import type { Metadata } from 'next'
-
-import configPromise from '@payload-config'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
-import { draftMode } from 'next/headers'
-import React, { cache } from 'react'
+import React from 'react'
 import { TypedLocale } from 'payload'
 import { notFound, redirect } from 'next/navigation'
-import { Button } from '@/ui/components/Button'
-import { CheckCircleIcon, CheckIcon, MoveLeftIcon } from 'lucide-react'
+import { CheckCircleIcon, MoveLeftIcon } from 'lucide-react'
 import { text, Text } from '@/ui/components/Text'
 import { queryStartPageByLang } from '@/app/(frontend)/[lang]/page'
 import { cn } from '@/ui/utils/utils'
 import { Link } from '@/ui/components/Link'
 
 import Image from 'next/image'
-import babyEucalyptus from './_images/baby-eucalyptus.png'
 import logo from './_images/beguem-daniel-logo-diamond.svg'
 
 export async function generateStaticParams() {

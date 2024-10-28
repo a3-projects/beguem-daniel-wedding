@@ -6,15 +6,17 @@ import { extractString } from '@/utilities/extract-string'
 import { ClockIcon, InfinityIcon, MapPinIcon, MapPinnedIcon } from 'lucide-react'
 import Image from 'next/image'
 export interface SectionLocationProps {
-  translations: StartPage['location']
+  startPage: StartPage
 }
 export const SectionLocation = (props: SectionLocationProps) => {
-  const { translations } = props
+  const {
+    startPage: { location },
+  } = props
   return (
     <section className="bg-white ~py-32/40 ~px-4/8 relative" id="location">
       <div className="~p-4/8 max-w-prose mx-auto flex flex-col items-center ~gap-2/4 ~py-16/20">
         <Text ty="h5" className="max-w-prose mx-auto font-serif text-center">
-          {translations.title}
+          {location.title}
         </Text>
         <div className="flex w-full items-center ~gap-4/8">
           <InfinityIcon strokeWidth={1} className="text-primary-300" />
@@ -32,7 +34,7 @@ export const SectionLocation = (props: SectionLocationProps) => {
               height={500}
               className="w-full h-full scale-110 overflow-hidden object-cover absolute blur-sm top-0 left-0 z-0"
               alt=""
-              src={extractString(translations.image1, 'url')}
+              src={extractString(location.image1, 'url')}
             />
             <div className="border relative border-primary-300 overflow-hidden w-full h-full">
               <Image
@@ -40,7 +42,7 @@ export const SectionLocation = (props: SectionLocationProps) => {
                 height={500}
                 className="w-full h-full object-cover transition-transform ease-in-out duration-500 hover:scale-105"
                 alt=""
-                src={extractString(translations.image1, 'url')}
+                src={extractString(location.image1, 'url')}
               />
             </div>
           </div>
@@ -50,7 +52,7 @@ export const SectionLocation = (props: SectionLocationProps) => {
               height={200}
               className="w-full h-full scale-110 object-cover absolute blur-sm top-0 left-0 z-0"
               alt=""
-              src={extractString(translations.image2, 'url')}
+              src={extractString(location.image2, 'url')}
             />
             <div className="w-full relative h-full border  border-primary-300 overflow-hidden ">
               <Image
@@ -58,7 +60,7 @@ export const SectionLocation = (props: SectionLocationProps) => {
                 height={200}
                 className="w-full h-full object-cover transition-transform ease-in-out duration-500 hover:scale-105"
                 alt=""
-                src={extractString(translations.image2, 'url')}
+                src={extractString(location.image2, 'url')}
               />
             </div>
           </div>
@@ -68,7 +70,7 @@ export const SectionLocation = (props: SectionLocationProps) => {
               height={200}
               className="w-full h-full scale-110 object-cover absolute blur-sm top-0 left-0 z-0"
               alt=""
-              src={extractString(translations.image3, 'url')}
+              src={extractString(location.image3, 'url')}
             />
             <div className="w-full relative h-full border  border-primary-300 overflow-hidden ">
               <Image
@@ -76,7 +78,7 @@ export const SectionLocation = (props: SectionLocationProps) => {
                 height={200}
                 className="w-full h-full object-cover transition-transform ease-in-out duration-500 hover:scale-105"
                 alt=""
-                src={extractString(translations.image3, 'url')}
+                src={extractString(location.image3, 'url')}
               />
             </div>
           </div>
@@ -84,16 +86,16 @@ export const SectionLocation = (props: SectionLocationProps) => {
         <div className="flex flex-col items-start ~gap-12/16 h-full">
           <div>
             <Text className="font-bold " ty="h3" as="h3">
-              {translations.name}
+              {location.name}
             </Text>
             <Text as="div" ty="subtitle" className="flex gap-2 ~mt-6/10">
               <ClockIcon className="svg-font-size-scale mt-1" />
-              <h3 key="str">{translations.time}</h3>
+              <h3 key="str">{location.time}</h3>
             </Text>
             <Text as="div" ty="subtitle" className="flex gap-2 ~mt-6/10">
               <MapPinIcon className="svg-font-size-scale mt-1" />
               <div className="flex flex-col">
-                {translations.address.split(',').map((str) => {
+                {location.address.split(',').map((str) => {
                   return <h3 key={str}>{str}</h3>
                 })}
               </div>
@@ -103,14 +105,14 @@ export const SectionLocation = (props: SectionLocationProps) => {
             <ButtonLink
               size="lg"
               color="secondary"
-              href={translations.mapsLink}
+              href={location.mapsLink}
               target="_blank"
               rel="noopener noreferrer"
             >
               <ButtonStart>
                 <MapPinnedIcon />
               </ButtonStart>
-              {translations.buttonText}
+              {location.buttonText}
             </ButtonLink>
           </div>
         </div>

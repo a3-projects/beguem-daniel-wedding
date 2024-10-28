@@ -178,6 +178,7 @@ export interface StartPage {
     weddingDate: string;
     participationDeadline: string;
     phoneNumber: string;
+    participationDeadlineInformation: string;
   };
   start: {
     backgroundImage: string | Media;
@@ -220,6 +221,7 @@ export interface StartPage {
       hairdresser: string;
       buttonText: string;
       nameMissing: string;
+      unexpectedError: string;
     };
     formSuccess: {
       title: string;

@@ -1,15 +1,16 @@
 import { StartPage } from '@/payload-types'
-import { text, Text } from '@/ui/components/Text'
+import { Text } from '@/ui/components/Text'
 import { cn } from '@/ui/utils/utils'
 import { InfinityIcon, PhoneIcon } from 'lucide-react'
 
 export interface FooterProps {
-  phoneNumber: string
-  translations: StartPage['footer']
+  startPage: StartPage
 }
 
 export const Footer = (props: FooterProps) => {
-  const { translations, phoneNumber } = props
+  const {
+    startPage: { footer, general },
+  } = props
   return (
     <footer className="flex flex-col justify-center items-center ~gap-16/32 bg-secondary-300 w-full ~pb-24/32 heropattern-texture-secondary-200 ~mt-24/32">
       <div className="flex w-full items-center ~gap-4/8">
@@ -19,19 +20,19 @@ export const Footer = (props: FooterProps) => {
       </div>
       <div className="flex flex-col justify-center items-center ~gap-4/8">
         <Text ty="h5" as="h2" className=" font-serif ~gap-24/32 text-center">
-          {translations.title}
+          {footer.title}
         </Text>
         <Text ty="body" className="text-center">
-          {translations.subtitle}!
+          {footer.subtitle}!
         </Text>
         <a
-          href={`tel:${phoneNumber}`}
+          href={`tel:${general.phoneNumber}`}
           className={cn('flex gap-2 text-secondary-600  underline-offset-2 hover:underline')}
         >
           <div className="p-1 size-8 rounded-full border border-secondary-600 flex items-center justify-center">
             <PhoneIcon size="16" strokeWidth="2" />
           </div>
-          <Text ty="subtitle">{phoneNumber}</Text>
+          <Text ty="subtitle">{general.phoneNumber}</Text>
         </a>
       </div>
     </footer>

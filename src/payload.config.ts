@@ -5,11 +5,18 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import {
   BoldFeature,
   ItalicFeature,
+  UnderlineFeature,
   LinkFeature,
   lexicalEditor,
+  FixedToolbarFeature,
+  UploadFeature,
+  HeadingFeature,
+  OrderedListFeature,
+  UnorderedListFeature,
+  HorizontalRuleFeature,
+  AlignFeature,
 } from '@payloadcms/richtext-lexical'
 import sharp from 'sharp' // editor-import
-import { UnderlineFeature } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -87,8 +94,20 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: lexicalEditor({
-    features: () => {
-      return [UnderlineFeature(), BoldFeature(), ItalicFeature()]
+    features: ({ defaultFeatures }) => {
+      return [
+        BoldFeature(),
+        ItalicFeature(),
+        HeadingFeature(),
+        UnderlineFeature(),
+        LinkFeature(),
+        UploadFeature(),
+        FixedToolbarFeature(),
+        OrderedListFeature(),
+        UnorderedListFeature(),
+        HorizontalRuleFeature(),
+        AlignFeature(),
+      ]
     },
   }),
   db: mongooseAdapter({

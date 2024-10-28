@@ -59,13 +59,13 @@ export const HeroBottomBow = (props: HeroBottomBowProps & ComponentProps<'sectio
       <div className={styles.body()}>
         <div>
           <div className="relative">
-            <div className="hero-circle w-[20%] bottom-0 -translate-x-[20%]  z-10 translate-y-[50%] absolute">
+            <div className="hero-circle w-[20%] bottom-0 -translate-x-[20%]  z-10 translate-y-[70%] absolute">
               <div className="border border-white/20  aspect-square rounded-full  bg-white/10"></div>
             </div>
             <div className="hero-circle w-[12%] bottom-0 -translate-x-[60%] -z-10 absolute">
               <div className="border border-white/20  aspect-square rounded-full bg-white/10"></div>
             </div>
-            <div className="hero-circle w-[10%] bottom-0 translate-x-[200%]  z-10 -translate-y-[300%] absolute">
+            <div className="hero-circle w-[10%] bottom-0 translate-x-[200%]  z-10 -translate-y-[150%] absolute">
               <div className="border border-white/20  aspect-square rounded-full  bg-white/10"></div>
             </div>
             <div className="hero-circle w-[15%] bottom-0  right-0 -translate-x-[150%] z-10 -translate-y-[100%] absolute">

@@ -6,10 +6,14 @@ import { InfinityIcon } from 'lucide-react'
 import { ComponentProps } from 'react'
 
 export interface SectionCountdownProps {
-  translations: StartPage['countdown']
+  startPage: StartPage
 }
 export const SectionCountdown = (props: SectionCountdownProps & ComponentProps<'section'>) => {
-  const { children, translations, className } = props
+  const {
+    children,
+    startPage: { countdown },
+    className,
+  } = props
 
   return (
     <section className={cn('~pb-12/20', className)}>
@@ -24,7 +28,7 @@ export const SectionCountdown = (props: SectionCountdownProps & ComponentProps<'
 
         <div className="~p-3xs max-w-prose mx-auto flex flex-col ~gap-16/20 ~py-16/20">
           <Text ty="h5" className="max-w-prose mx-auto font-serif text-center">
-            {translations.title}
+            {countdown.title}
           </Text>
 
           <div className="relative flex items-center justify-center">{children}</div>

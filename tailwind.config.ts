@@ -66,18 +66,18 @@ export default {
         info: { ...colors.blue, fg: '#fff' },
       },
       /* @ts-ignore*/
-      //   typography: ({ theme }) => ({
-      //     DEFAULT: {
-      //       css: {
-      //         "--tw-prose-body": theme("colors.neutral[400]"),
-      //         "--tw-prose-headings": theme("colors.neutral[50]"),
-      //         "--tw-prose-lead": theme("colors.neutral[400]"),
-      //         "--tw-prose-links": theme("colors.neutral[50]"),
-      //         "--tw-prose-bullets": theme("colors.primary[500]"),
-      //         "--tw-prose-hr": theme("colors.primary[200]"),
-      //       },
-      //     },
-      //   }),
+      typography: ({ theme }) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('colors.neutral[900]'),
+            '--tw-prose-headings': theme('colors.neutral[900]'),
+            '--tw-prose-lead': theme('colors.primary[500]'),
+            '--tw-prose-links': theme('colors.secondary[600]'),
+            '--tw-prose-bullets': theme('colors.primary[500]'),
+            '--tw-prose-hr': theme('colors.primary[200]'),
+          },
+        },
+      }),
 
       animation: {
         'pulse-fade': 'pulse-fade 1.5s ease-out infinite both',
@@ -85,8 +85,8 @@ export default {
     },
   },
   plugins: [
-    // require("@tailwindcss/typography"),
     fluid,
+    require('@tailwindcss/typography'),
     require('tailwindcss-react-aria-components')({ prefix: 'rac' }),
     require('tailwindcss-hero-patterns'),
     require('tailwindcss-animate'),

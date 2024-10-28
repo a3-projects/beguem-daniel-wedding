@@ -15,8 +15,8 @@ import { SectionLocation } from '@/app/(frontend)/[lang]/_components/SectionLoca
 import { SectionInformation } from '@/app/(frontend)/[lang]/_components/SectionInformation'
 import { LanguageSelect } from '@/app/(frontend)/[lang]/_components/LanguageSelect'
 import { ButtonLink } from '@/ui/components/ButtonLink'
-import { text } from '@/ui/components/Text'
-import Image from 'next/image'
+import { text, Text } from '@/ui/components/Text'
+import { interpolate } from '@/utilities/interpolate'
 
 export async function generateStaticParams() {
   return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
@@ -44,32 +44,41 @@ export default async function Page({ params: paramsPromise }: Args) {
   }
 
   const startPage = page
-  const { countdown, footer, general, start, pariticipation, information, location } = startPage
-  const weddingDate = new Date(general.weddingDate)
-  const weddingDateFormatted = new Date(weddingDate).toLocaleDateString('de-DE', {
+  const { general, start } = startPage
+  const weddingDateFormatted = new Date(general.weddingDate).toLocaleDateString('de-DE', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
   })
+  const deadlineDate = new Date(general.participationDeadline).toLocaleDateString('de-DE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+
   return (
     <>
       <div>
         <LanguageSelect lang={lang} />
-        {start && (
-          <HeroBottomBow
-            subtitle={weddingDateFormatted}
-            buttonLink={'#teilnahme-bestaetigen'}
-            {...start}
-          />
-        )}
-        {countdown && (
-          <SectionCountdown translations={countdown}>
-            <Countdown endTime={general.weddingDate} translations={countdown} />
-          </SectionCountdown>
-        )}
-        <div className="mx-auto flex items-center justify-center">
+        <HeroBottomBow
+          subtitle={weddingDateFormatted}
+          buttonLink={'#teilnahme-bestaetigen'}
+          {...start}
+        />
+        <SectionCountdown startPage={startPage}>
+          <Countdown endTime={general.weddingDate} startPage={startPage} />
+        </SectionCountdown>
+        <div className="mx-auto items-center justify-center flex flex-col ">
+          <Text as="h2" ty="subtitle">
+            {interpolate(startPage.general.participationDeadlineInformation, {
+              deadlineDate,
+            })}
+          </Text>
           <ButtonLink
-            className={text({ ty: 'subtitle', className: 'align-self-center justify-self-center' })}
+            className={text({
+              ty: 'subtitle',
+              className: 'align-self-center justify-self-center ~mt-8/12',
+            })}
             href={'#teilnahme-bestaetigen'}
             color="primary"
             size="lg"
@@ -78,13 +87,13 @@ export default async function Page({ params: paramsPromise }: Args) {
           </ButtonLink>
         </div>
 
-        {location && <SectionLocation translations={location} />}
+        <SectionLocation startPage={startPage} />
 
-        {information && <SectionInformation translations={information} />}
+        <SectionInformation startPage={startPage} />
 
-        {pariticipation && <SectionParticipation translations={pariticipation} />}
+        <SectionParticipation startPage={startPage} deadlineDate={deadlineDate} />
 
-        {footer && <Footer translations={footer} phoneNumber={general.phoneNumber} />}
+        <Footer startPage={startPage} />
       </div>
     </>
   )

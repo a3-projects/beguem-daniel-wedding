@@ -2,6 +2,7 @@ import React, { Fragment, JSX } from 'react'
 import { DefaultNodeTypes } from '@payloadcms/richtext-lexical'
 
 import {
+  IS_ALIGN_CENTER,
   IS_BOLD,
   IS_CODE,
   IS_ITALIC,
@@ -11,6 +12,10 @@ import {
   IS_UNDERLINE,
 } from './nodeFormat'
 import { Link } from '@/ui/components/Link'
+import { ImageMedia } from '@/components/Media/ImageMedia'
+import { Media } from '@/payload-types'
+import { cn } from '@/ui/utils/utils'
+import { ElementFormatType } from 'lexical'
 
 export type NodeTypes = DefaultNodeTypes
 
@@ -82,14 +87,30 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
         }
 
         const serializedChildren = 'children' in node ? serializedChildrenFn(node) : ''
+        let className
+
+        const getFormatClass = (format: ElementFormatType) => {
+          switch (format) {
+            case 'center':
+              return 'text-center'
+            case 'left':
+              return 'text-left'
+            case 'right':
+              return 'text-right'
+            default:
+              return ''
+          }
+        }
 
         switch (node.type) {
           case 'linebreak': {
             return <br className="col-start-2" key={index} />
           }
           case 'paragraph': {
+            node.format
+
             return (
-              <p className="col-start-2" key={index}>
+              <p className={cn(getFormatClass(node.format))} key={index}>
                 {serializedChildren}
               </p>
             )
@@ -97,7 +118,7 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
           case 'heading': {
             const Tag = node?.tag
             return (
-              <Tag className="col-start-2" key={index}>
+              <Tag className={cn(getFormatClass(node.format))} key={index}>
                 {serializedChildren}
               </Tag>
             )
@@ -109,6 +130,11 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
                 {serializedChildren}
               </Tag>
             )
+          }
+          case 'horizontalrule':
+            return <hr />
+          case 'upload': {
+            return <ImageMedia resource={node.value as Media} />
           }
           case 'listitem': {
             if (node?.checked != null) {
@@ -135,7 +161,7 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
           }
           case 'quote': {
             return (
-              <blockquote className="col-start-2" key={index}>
+              <blockquote className={cn(getFormatClass(node.format))} key={index}>
                 {serializedChildren}
               </blockquote>
             )
@@ -149,6 +175,7 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
                 target={Boolean(fields?.newTab) ? '_blank' : undefined}
                 type={fields.linkType === 'internal' ? 'reference' : 'custom'}
                 href={fields.url}
+                className={cn('col-start-2', getFormatClass(node.format))}
               >
                 {serializedChildren}
               </Link>

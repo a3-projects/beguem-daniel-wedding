@@ -42,6 +42,16 @@ export const StartPage: GlobalConfig = {
           type: 'text',
           required: true,
         },
+        {
+          name: 'participationDeadlineInformation',
+          label: 'Information Teilnahmefrist',
+          type: 'text',
+          admin: {
+            description: 'Variable: {{deadlineDate}}',
+          },
+          localized: true,
+          required: true,
+        },
       ],
     },
     {
@@ -188,18 +198,21 @@ export const StartPage: GlobalConfig = {
               name: 'makeupHairPrice',
               label: 'Preis Makeup / Friseur',
               type: 'number',
+              localized: true,
               required: true,
             },
             {
               name: 'makeup',
               label: 'Makeup',
               type: 'text',
+              localized: true,
               required: true,
             },
             {
               name: 'hairdresser',
               label: 'Friseur',
               type: 'text',
+              localized: true,
               required: true,
             },
             {
@@ -212,6 +225,13 @@ export const StartPage: GlobalConfig = {
             {
               name: 'nameMissing',
               label: 'Fehlermeldung: Name fehlt',
+              type: 'text',
+              localized: true,
+              required: true,
+            },
+            {
+              name: 'unexpectedError',
+              label: 'Unerwarteter Fehler',
               type: 'text',
               localized: true,
               required: true,

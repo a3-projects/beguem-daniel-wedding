@@ -1,9 +1,25 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, CollectionSlug, LabelFunction, StaticLabel } from 'payload'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
-import { ParticipationExportButton } from '@/components/ParticipationExportButton'
-
+// export function createRowLabel({
+//   defaultLabel,
+//   path,
+//   relationTo,
+// }: {
+//   defaultLabel: LabelFunction | StaticLabel
+//   path: string
+//   relationTo?: CollectionSlug
+// }) {
+//   return {
+//     path: '@payload/components/row-label',
+//     clientProps: {
+//       defaultLabel: defaultLabel,
+//       path: path,
+//       relationTo: relationTo,
+//     },
+//   }
+// }
 export const Participation: CollectionConfig = {
   slug: 'participation',
   access: {
@@ -51,6 +67,15 @@ export const Participation: CollectionConfig = {
       name: 'participantsKid',
       label: 'Teilnehmer Kind (bis 3 Jahre)',
       type: 'array',
+      admin: {
+        // initCollapsed: true,
+        // components: {
+        //   RowLabel: createRowLabel({
+        //     defaultLabel: '',
+        //     path: 'name',
+        //   }),
+        // },
+      },
       fields: [
         {
           name: 'name',
