@@ -130,6 +130,7 @@ export default buildConfig({
         },
         endpoint: process.env.MINIO_ADDRESS || '',
         region: 'eu-central-1',
+        forcePathStyle: true,
       },
     }),
   ],
