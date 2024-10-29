@@ -12,6 +12,7 @@ import logo from './_images/beguem-daniel-logo-diamond.svg'
 import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
 export const dynamicParams = true
+export const dynamic = 'force-static'
 
 export async function generateStaticParams() {
   // do not delete this, otherwise SSR pages won't be cached
