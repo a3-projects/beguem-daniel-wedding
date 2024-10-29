@@ -17,6 +17,8 @@ import { LanguageSelect } from '@/app/(frontend)/[lang]/_components/LanguageSele
 import { ButtonLink } from '@/ui/components/ButtonLink'
 import { text, Text } from '@/ui/components/Text'
 import { interpolate } from '@/utilities/interpolate'
+import { headers } from 'next/headers'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 
 export async function generateStaticParams() {
   return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
@@ -32,7 +34,12 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { lang } = await paramsPromise
 
   if (!lang) {
-    return redirect('/de')
+    const headersList = await headers()
+    const acceptLanguage = headersList.get('accept-language') || 'de'
+
+    const preferredLang = acceptLanguage.toLowerCase().split(',')[0].split('-')[0]
+    const supportedLang = ['de', 'tr', 'sr'].includes(preferredLang) ? preferredLang : 'de'
+    return redirect(`/${supportedLang}`)
   }
 
   const page = await queryStartPageByLang({
@@ -116,11 +123,11 @@ export const queryStartPageByLang = cache(async ({ lang }: { lang: TypedLocale }
 
   const payload = await getPayloadHMR({ config: configPromise })
 
-  const result = await payload.findGlobal({
+  const result = await getCachedGlobal({
     slug: 'start-page',
     overrideAccess: draft,
     locale: lang,
-  })
+  })()
 
   return result || null
 })

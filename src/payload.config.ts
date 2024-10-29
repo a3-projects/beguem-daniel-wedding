@@ -132,10 +132,10 @@ export default buildConfig({
   ],
   globals: [StartPage],
   plugins: [
-    seoPlugin({
-      generateTitle,
-      generateURL,
-    }),
+    // seoPlugin({
+    //   generateTitle,
+    //   generateURL,
+    // }),
 
     s3Storage({
       collections: {
