@@ -12,6 +12,7 @@ import logo from './_images/beguem-daniel-logo-diamond.svg'
 import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
 export const dynamicParams = true
+export const revalidate = 999999
 
 type Args = {
   params: Promise<{

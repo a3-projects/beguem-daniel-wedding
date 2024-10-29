@@ -22,7 +22,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
 export const dynamicParams = true
-
+export const revalidate = 999999
 type Args = {
   params: Promise<{
     lang?: TypedLocale
