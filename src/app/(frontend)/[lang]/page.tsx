@@ -19,16 +19,14 @@ import { text, Text } from '@/ui/components/Text'
 import { interpolate } from '@/utilities/interpolate'
 import { headers } from 'next/headers'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-
-export async function generateStaticParams() {
-  return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
-}
+import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
 type Args = {
   params: Promise<{
     lang?: TypedLocale
   }>
 }
+export const dynamicParams = true
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { lang } = await paramsPromise
@@ -38,8 +36,14 @@ export default async function Page({ params: paramsPromise }: Args) {
     const acceptLanguage = headersList.get('accept-language') || 'de'
 
     const preferredLang = acceptLanguage.toLowerCase().split(',')[0].split('-')[0]
-    const supportedLang = ['de', 'tr', 'sr'].includes(preferredLang) ? preferredLang : 'de'
+    const supportedLang = SUPPORTED_LOCALES.includes(preferredLang as TypedLocale)
+      ? preferredLang
+      : 'de'
     return redirect(`/${supportedLang}`)
+  }
+
+  if (!SUPPORTED_LOCALES.includes(lang)) {
+    return notFound()
   }
 
   const page = await queryStartPageByLang({

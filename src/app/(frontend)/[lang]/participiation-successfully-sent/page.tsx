@@ -9,6 +9,7 @@ import { Link } from '@/ui/components/Link'
 
 import Image from 'next/image'
 import logo from './_images/beguem-daniel-logo-diamond.svg'
+import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
 export async function generateStaticParams() {
   return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
@@ -23,8 +24,8 @@ type Args = {
 export default async function Page({ params: paramsPromise }: Args) {
   const { lang } = await paramsPromise
 
-  if (!lang) {
-    return redirect('/de')
+  if (!lang || !SUPPORTED_LOCALES.includes(lang)) {
+    return notFound()
   }
 
   const page = await queryStartPageByLang({
