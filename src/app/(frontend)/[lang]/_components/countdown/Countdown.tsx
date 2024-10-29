@@ -22,6 +22,8 @@ export const Countdown = (props: CountdownProps & ComponentPropsWithRef<'div'>) 
   const [remainingTime, setRemainingTime] = useState<Time>(calculateRemainingTime())
 
   useEffect(() => {
+    setRemainingTime(calculateRemainingTime())
+
     const interval = setInterval(() => {
       setRemainingTime(calculateRemainingTime())
     }, 1000)
@@ -29,7 +31,7 @@ export const Countdown = (props: CountdownProps & ComponentPropsWithRef<'div'>) 
     return () => {
       clearInterval(interval)
     }
-  })
+  }, [])
 
   function getTimeDifference(date1: Date, date2: Date) {
     // Calculate the difference in milliseconds
@@ -89,7 +91,7 @@ export const Countdown = (props: CountdownProps & ComponentPropsWithRef<'div'>) 
           {countdown.seconds}
         </Text>
         <div>
-          <Text ty="h2" className="uppercase font-serif text-center">
+          <Text suppressHydrationWarning ty="h2" className="uppercase font-serif text-center">
             {remainingTime.seconds}
           </Text>
         </div>
