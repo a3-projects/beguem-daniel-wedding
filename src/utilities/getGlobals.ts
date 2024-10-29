@@ -24,9 +24,9 @@ const getGlobal: <TSlug extends GlobalSlug>(
 export const getCachedGlobal = <TSlug extends GlobalSlug>(options: Options<TSlug>) =>
   unstable_cache(
     async (): Promise<DataFromGlobalSlug<TSlug>> => getGlobal(options),
-    [options.slug],
+    [options.slug, options.locale || 'default'],
     {
-      tags: [getGlobalRevalidateKey(options.slug)],
+      tags: [getGlobalRevalidateKey(options.slug), options.locale || 'default'],
     },
   )
 
