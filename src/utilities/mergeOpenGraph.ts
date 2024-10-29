@@ -2,16 +2,16 @@ import type { Metadata } from 'next'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'An open-source website built with Payload and Next.js.',
+  description: 'Begüm & Daniel - 14.06.2025',
   images: [
     {
       url: process.env.NEXT_PUBLIC_SERVER_URL
-        ? `${process.env.NEXT_PUBLIC_SERVER_URL}/website-template-OG.webp`
-        : '/website-template-OG.webp',
+        ? `${process.env.NEXT_PUBLIC_SERVER_URL}/og-image.webp`
+        : '/og-image.webp',
     },
   ],
-  siteName: 'Payload Website Template',
-  title: 'Payload Website Template',
+  siteName: 'Begüm & Daniel',
+  title: 'Begüm & Daniel',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {
