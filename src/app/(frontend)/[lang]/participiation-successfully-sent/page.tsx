@@ -13,8 +13,6 @@ import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-
 
 export const dynamicParams = true
 
-export const revalidate = 100
-
 export async function generateStaticParams() {
   // do not delete this, otherwise SSR pages won't be cached
   return []
