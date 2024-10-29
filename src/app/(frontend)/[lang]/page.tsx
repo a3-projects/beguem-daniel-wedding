@@ -21,12 +21,13 @@ import { headers } from 'next/headers'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
+export const dynamicParams = true
+
 type Args = {
   params: Promise<{
     lang?: TypedLocale
   }>
 }
-export const dynamicParams = true
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { lang } = await paramsPromise

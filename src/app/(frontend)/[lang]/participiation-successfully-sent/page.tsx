@@ -11,9 +11,7 @@ import Image from 'next/image'
 import logo from './_images/beguem-daniel-logo-diamond.svg'
 import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
-export async function generateStaticParams() {
-  return [{ lang: 'de' }, { lang: 'tr' }, { lang: 'sr' }]
-}
+export const dynamicParams = true
 
 type Args = {
   params: Promise<{
