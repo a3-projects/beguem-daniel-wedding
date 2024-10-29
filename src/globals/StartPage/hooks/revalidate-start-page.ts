@@ -14,6 +14,7 @@ export const revalidateStartPage: GlobalAfterChangeHook = (args) => {
 
     req.payload.logger.info(`Revalidating path /${req.locale}`)
     revalidatePath(`/${req.locale}`)
+    revalidatePath(`/${req.locale}/participiation-successfully-sent`)
   }
 
   return doc

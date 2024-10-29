@@ -121,8 +121,6 @@ export async function generateMetadata({ params: paramsPromise }): Promise<Metad
 export const queryStartPageByLang = cache(async ({ lang }: { lang: TypedLocale }) => {
   const { isEnabled: draft } = await draftMode()
 
-  const payload = await getPayloadHMR({ config: configPromise })
-
   const result = await getCachedGlobal({
     slug: 'start-page',
     overrideAccess: draft,
