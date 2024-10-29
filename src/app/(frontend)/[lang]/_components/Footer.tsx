@@ -23,7 +23,7 @@ export const Footer = (props: FooterProps) => {
           {footer.title}
         </Text>
         <Text ty="body" className="text-center">
-          {footer.subtitle}!
+          {footer.subtitle}
         </Text>
         <a
           href={`tel:${general.phoneNumber}`}

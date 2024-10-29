@@ -19,7 +19,7 @@ export const LanguageSelect = ({
 }: LanguageSelectProps & Omit<ComponentProps<typeof Select>, 'children'>) => {
   const items: Array<{ label: string; id: Config['locale'] }> = [
     { label: 'Deutsch', id: 'de' },
-    { label: 'Српски', id: 'sr' },
+    { label: 'Srpski', id: 'sr' },
     { label: 'Türkçe', id: 'tr' },
   ]
   return (
