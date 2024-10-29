@@ -22,7 +22,6 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
 export const dynamicParams = true
-export const revalidate = 100
 
 export async function generateStaticParams() {
   // do not delete this, otherwise SSR pages won't be cached
@@ -86,8 +85,8 @@ export default async function Page({ params: paramsPromise }: Args) {
         <SectionCountdown startPage={startPage}>
           <Countdown endTime={general.weddingDate} startPage={startPage} />
         </SectionCountdown>
-        <div className="mx-auto items-center justify-center flex flex-col ">
-          <Text as="h2" ty="subtitle">
+        <div className="mx-auto items-center justify-center flex flex-col ~px-4/8">
+          <Text className="text-center" as="h2" ty="subtitle">
             {interpolate(startPage.general.participationDeadlineInformation, {
               deadlineDate,
             })}
