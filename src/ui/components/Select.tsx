@@ -24,7 +24,7 @@ export const select = tv({
     base: '',
     list: 'flex flex-col gap-2',
     button:
-      'svg-font-scale flex items-center flex-row gap-2 text-white ~text-base/xl border border-white/50 bg-black/20 backdrop-blur-sm py-3 px-5 rounded',
+      'svg-font-scale flex items-center flex-row gap-2 text-white ~text-base/xl border border-white/50 bg-primary-900/50 backdrop-blur-sm ~py-1/3 ~px-3/5 rounded',
     popover:
       'relative p-2  z-50 max-h-96 min-w-[10rem] overflow-hidden rounded border bg-neutral-50 text-neutral-500 shadow-md open:animate-in :animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
   },

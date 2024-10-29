@@ -10,11 +10,11 @@ export const revalidateStartPage: GlobalAfterChangeHook = (args) => {
     req.payload.logger.info(`Skipped revalidating start-page`)
   } else {
     req.payload.logger.info(`Revalidating start-page`)
-    revalidateGlobal('start-page', req.locale)
+    revalidateGlobal('start-page')
 
     req.payload.logger.info(`Revalidating path /${req.locale}`)
-    revalidatePath(`/${req.locale}`)
-    revalidatePath(`/${req.locale}/participiation-successfully-sent`)
+    revalidatePath(`/(frontend)/[lang]`, 'layout')
+    // revalidatePath(`/${req.locale}/participiation-successfully-sent`)
   }
 
   return doc

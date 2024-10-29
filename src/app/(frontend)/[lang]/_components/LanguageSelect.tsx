@@ -4,7 +4,6 @@ import { ComponentProps } from 'react'
 import { Select } from '@/ui/components/Select'
 import { cn } from '@/ui/utils/utils'
 import { Config } from '@/payload-types'
-import { composeRenderProps } from 'react-aria-components'
 
 export type LanguageSelectProps = {
   className?: string
@@ -24,20 +23,22 @@ export const LanguageSelect = ({
     { label: 'Türkçe', id: 'tr' },
   ]
   return (
-    <div className={cn('absolute top-0 right-0 z-50 p-4', className)}>
-      <Select
-        aria-label="Select Language"
-        {...props}
-        className={({ isOpen }) => cn({ 'pr-4': isOpen })}
-        selectedKey={lang}
-        items={items}
-      >
-        {(item) => (
-          <Select.LinkItem key={item.id} href={`/${item.id}`} textValue={item.id}>
-            {item.label}
-          </Select.LinkItem>
-        )}
-      </Select>
+    <div className={cn('sticky flex justify-end w-full top-0 z-50  h-0', className)}>
+      <div className="~p-2/6">
+        <Select
+          aria-label="Select Language"
+          className=""
+          {...props}
+          selectedKey={lang}
+          items={items}
+        >
+          {(item) => (
+            <Select.LinkItem key={item.id} href={`/${item.id}`} textValue={item.id}>
+              {item.label}
+            </Select.LinkItem>
+          )}
+        </Select>
+      </div>
     </div>
   )
 }

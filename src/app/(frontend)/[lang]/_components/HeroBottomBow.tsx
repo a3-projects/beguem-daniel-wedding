@@ -92,7 +92,7 @@ export const HeroBottomBow = (props: HeroBottomBowProps & ComponentProps<'sectio
           </Text>
         </div>
 
-        <ButtonLink
+        {/* <ButtonLink
           className={text({ ty: 'subtitle' })}
           href={buttonLink}
           color="primary"
@@ -100,7 +100,7 @@ export const HeroBottomBow = (props: HeroBottomBowProps & ComponentProps<'sectio
           size="lg"
         >
           {buttonText}
-        </ButtonLink>
+        </ButtonLink> */}
         <svg className={styles.bow()} viewBox="0 0 1920 150" version="1.1">
           <g transform="matrix(1,0,0,1,0,-930.973)">
             <path

@@ -18,7 +18,7 @@ export const Footer = (props: FooterProps) => {
         <InfinityIcon strokeWidth={1} className="text-secondary-200" />
         <div className="h-[6px] border-t border-b border-l border-secondary-200 flex-grow rounded rounded-r-none"></div>
       </div>
-      <div className="flex flex-col justify-center items-center ~gap-4/8">
+      <div className="flex flex-col justify-center items-center ~gap-4/8 ~px-4/8">
         <Text ty="h5" as="h2" className=" font-serif ~gap-24/32 text-center">
           {footer.title}
         </Text>

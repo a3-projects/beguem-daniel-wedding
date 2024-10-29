@@ -31,41 +31,20 @@ export const SectionParticipation = (props: SectionParticipationProps) => {
       </div>
       <div className="mx-auto ~mt-6/8 z-10 max-w-[640px] relative p-[4px] border border-primary-300">
         <div className="~px-4/12 ~py-12/20 border border-primary-300 bg-white/80 backdrop-blur-sm">
-          {isDeadlinePassed && (
-            <div className="flex flex-col items-center ~gap-4/8">
-              <Text ty="h5" as="h2" className="font-serif   text-center">
-                Die Teilnahmefrist ist abgelaufen
-              </Text>
-              <Text className="text-center">Bitte ruf uns an oder schreibe uns auf WhatsApp.</Text>
-              <a
-                href={`tel:${general.phoneNumber}`}
-                className={cn(
-                  text({ ty: 'subtitle' }),
-                  'flex items-center gap-2 underline-offset-2 text-secondary-500 underline mt-4',
-                )}
-              >
-                <PhoneIcon className="svg-font-size-scale" />
-                <p>{general.phoneNumber}</p>
-              </a>
-            </div>
-          )}
-
-          {!isDeadlinePassed && (
-            <>
-              <Text ty="h5" as="h2" className="font-serif ~pb-6/8   text-center">
-                {pariticipation.title}
-              </Text>
-              <Text ty="body" className="text-center text-neutral-950 ~pb-6/8">
-                {pariticipation.subtitle}
-              </Text>
-              <ParticipationForm startPage={startPage} />
-              <Text as="h2" className="~mt-4/8 text-neutral-500 text-center">
-                {interpolate(startPage.general.participationDeadlineInformation, {
-                  deadlineDate,
-                })}
-              </Text>
-            </>
-          )}
+          <>
+            <Text ty="h5" as="h2" className="font-serif ~pb-6/8   text-center">
+              {pariticipation.title}
+            </Text>
+            <Text ty="body" className="text-center text-neutral-950 ~pb-6/8">
+              {pariticipation.subtitle}
+            </Text>
+            <ParticipationForm startPage={startPage} />
+            <Text as="h2" className="~mt-4/8 text-neutral-500 text-center">
+              {interpolate(startPage.general.participationDeadlineInformation, {
+                deadlineDate,
+              })}
+            </Text>
+          </>
         </div>
       </div>
     </section>
