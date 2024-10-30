@@ -1466,7 +1466,7 @@ async function seedData({ payload, req }: MigrateUpArgs) {
       },
       start: {
         backgroundImage: heroCouple.id,
-        title: 'Begum & Daniel',
+        title: 'Beguum & Daniel',
         description: 'Radujemo se što ćemo podeliti naš poseban dan sa vama!',
         buttonText: 'Potvrdi učešće',
       },
