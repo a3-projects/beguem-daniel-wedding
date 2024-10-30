@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 
-import configPromise from '@payload-config'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { TypedLocale } from 'payload'
@@ -17,12 +15,16 @@ import { LanguageSelect } from '@/app/(frontend)/[lang]/_components/LanguageSele
 import { ButtonLink } from '@/ui/components/ButtonLink'
 import { text, Text } from '@/ui/components/Text'
 import { interpolate } from '@/utilities/interpolate'
-import { headers } from 'next/headers'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
+import { getLocaleOrDefault } from '@/app/(frontend)/_utils/get-local-or-default'
 
 export const dynamicParams = true
-export const dynamic = 'force-static'
+
+export async function generateStaticParams() {
+  // do not delete this, otherwise SSR pages won't be cached
+  return []
+}
 
 type Args = {
   params: Promise<{
@@ -34,18 +36,13 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { lang } = await paramsPromise
 
   if (!lang) {
-    const headersList = await headers()
-    const acceptLanguage = headersList.get('accept-language') || 'de'
+    const supportedLocale = await getLocaleOrDefault()
 
-    const preferredLang = acceptLanguage.toLowerCase().split(',')[0].split('-')[0]
-    const supportedLang = SUPPORTED_LOCALES.includes(preferredLang as TypedLocale)
-      ? preferredLang
-      : 'de'
-    return redirect(`/${supportedLang}`)
+    return redirect(`/${supportedLocale}`)
   }
 
   if (!SUPPORTED_LOCALES.includes(lang)) {
-    return notFound()
+    notFound()
   }
 
   const page = await queryStartPageByLang({
@@ -53,7 +50,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   })
 
   if (!page) {
-    return notFound()
+    notFound()
   }
 
   const startPage = page
@@ -63,6 +60,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     month: '2-digit',
     year: 'numeric',
   })
+
   const deadlineDate = new Date(general.participationDeadline).toLocaleDateString('de-DE', {
     day: '2-digit',
     month: '2-digit',

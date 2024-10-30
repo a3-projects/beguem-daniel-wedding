@@ -23,6 +23,7 @@ export interface Config {
   };
   globals: {
     'start-page': StartPage;
+    'not-found-page': NotFoundPage;
   };
   locale: 'de' | 'tr' | 'sr';
   user: User & {
@@ -251,6 +252,18 @@ export interface StartPage {
     title: string;
     subtitle: string;
   };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "not-found-page".
+ */
+export interface NotFoundPage {
+  id: string;
+  title: string;
+  subtitle: string;
+  backToStartPage: string;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

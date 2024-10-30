@@ -5,8 +5,6 @@ import { Playfair_Display, Poppins } from 'next/font/google'
 
 import React from 'react'
 
-import { AdminBar } from '@/components/AdminBar'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { Providers } from '@/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'

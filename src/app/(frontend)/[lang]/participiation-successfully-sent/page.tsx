@@ -12,7 +12,11 @@ import logo from './_images/beguem-daniel-logo-diamond.svg'
 import { SUPPORTED_LOCALES } from '@/app/(frontend)/[lang]/_constants/supported-locales'
 
 export const dynamicParams = true
-export const dynamic = 'force-static'
+
+export async function generateStaticParams() {
+  // do not delete this, otherwise SSR pages won't be cached
+  return []
+}
 
 type Args = {
   params: Promise<{
@@ -45,12 +49,6 @@ export default async function Page({ params: paramsPromise }: Args) {
         id="home"
         className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-primary-50/50 heropattern-texture-primary-100 ~px-4/8"
       >
-        {/* <Image
-          className="-right-[10%] opacity-20 fixed w-full z-0 pointer-events-none "
-          alt=""
-          src={babyEucalyptus}
-        /> */}
-
         <div className="relative z-10 mx-auto flex max-w-prose flex-col items-center justify-center">
           <Image className="" width={160} alt="" src={logo} />
           <div className="flex gap-2 items-center ~mt-8/12">

@@ -25,6 +25,7 @@ import { Media } from './collections/Media'
 import Users from './collections/Users'
 import { seedHandler } from './endpoints/seedHandler'
 import { StartPage } from './globals/StartPage/config'
+import { NotFoundPage } from './globals/NotFoundPage/config'
 
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { en } from '@payloadcms/translations/languages/en'
@@ -130,7 +131,7 @@ export default buildConfig({
       path: '/seed',
     },
   ],
-  globals: [StartPage],
+  globals: [StartPage, NotFoundPage],
   plugins: [
     // seoPlugin({
     //   generateTitle,
