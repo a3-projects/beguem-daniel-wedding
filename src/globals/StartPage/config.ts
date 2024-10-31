@@ -191,6 +191,9 @@ export const StartPage: GlobalConfig = {
               name: 'makeupHairInfo',
               label: 'Information Makeup / Friseur',
               type: 'text',
+              admin: {
+                description: 'Variable: {{sum}}',
+              },
               localized: true,
               required: true,
             },

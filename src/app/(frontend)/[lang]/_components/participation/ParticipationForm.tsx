@@ -16,6 +16,7 @@ import { Text } from '@/ui/components/Text'
 import { useParams, useRouter } from 'next/navigation'
 import { Checkbox } from '@/ui/components/Checkbox'
 import { cn } from '@/ui/utils/utils'
+import { interpolate } from '@/utilities/interpolate'
 
 export interface ParticipationFormProps {
   startPage: StartPage
@@ -169,7 +170,7 @@ export const ParticipationForm = (props: ParticipationFormProps) => {
           {pariticipation.form.addParticipant}
         </Button>
         <Text ty="caption" className="fl-text-step--1 flex gap-1 text-neutral-500">
-          *{pariticipation.form.makeupHairInfo} ({makeupHairSum}€)
+          *{interpolate(pariticipation.form.makeupHairInfo, { sum: makeupHairSum.toFixed(0) })}
         </Text>
       </div>
       <div className="flex flex-col ~gap-2/4">
