@@ -26,6 +26,7 @@ export const participationsExport: PayloadHandler = async (req): Promise<Respons
 
   const participants = await payload.find({
     collection: 'participation',
+    pagination: false,
   })
   const results = participants.docs
 
